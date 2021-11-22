@@ -2335,3 +2335,21 @@
 [2021-11-22 07:49:16.074721] (generate_RNG_tab: 57) --> Dice Created
 [2021-11-22 07:49:16.075150] (generate_RNG_tab: 76) --> Card Dropdown Menu
 [2021-11-22 07:49:16.075333] (<module>: 84) --> Prayers heard but unanswered
+[2021-11-22 09:13:12.245776] (<module>: 31) --> Imported all modules
+[2021-11-22 09:13:12.395571] (generate_menubar: 10) --> Preparing Menubar
+[2021-11-22 09:13:12.416310] (generate_menubar: 21) --> Created Menubar
+[2021-11-22 09:13:12.416908] (generate_tabs: 7) --> Preparing Tabs
+[2021-11-22 09:13:12.418701] (generate_tabs: 33) --> Created Tabs
+[2021-11-22 09:13:12.419132] (generate_character_tab: 7) --> Preparing Character Tab
+[2021-11-22 09:13:12.433199] (generate_character_tab: 20) --> Created Character Tab
+[2021-11-22 09:13:12.433383] (<module>: 56) --> Preparing Equipment Tab Layout
+[2021-11-22 09:13:12.433572] (<module>: 59) --> Created Equipment Tab Layout
+[2021-11-22 09:13:12.434475] (generate_game_notes_tab: 7) --> Preparing Game Notes Tab
+[2021-11-22 09:13:12.441140] (generate_game_notes_tab: 19) --> Created Game Notes Tab
+[2021-11-22 09:13:12.441805] (generate_character_notes_tab: 6) --> Preparing Character Notes
+[2021-11-22 09:13:12.442058] (generate_character_notes_tab: 15) --> Created Character Notes Tab
+[2021-11-22 09:13:12.443171] (generate_RNG_tab: 11) --> Praying to RNGesus
+[2021-11-22 09:13:12.444470] (generate_RNG_tab: 41) --> Dice dropdown created
+[2021-11-22 09:13:12.444857] (generate_RNG_tab: 59) --> Dice Created
+[2021-11-22 09:13:12.445289] (generate_RNG_tab: 78) --> Card Dropdown Menu
+[2021-11-22 09:13:12.445493] (generate_RNG_tab: 84) --> Prayers heard but unanswered
