@@ -39,7 +39,7 @@ def get_current_character(root, woundDict, chipDict):
     # Get Arcane Abilities in AB tab
     
     # Get EandD in EandD tab
-    This is an error test
+    
     # Get Equipment in equipment tab
     
     # Get character notes
