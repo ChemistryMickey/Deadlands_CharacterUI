@@ -13,7 +13,7 @@ def generate_menubar( root ):
 	fileMenu = Menu( menubar, tearoff = 0 );
 	fileMenu.add_command( label = 'New Character', command = create_new_character );
 	fileMenu.add_command( label = 'Load Character', command = load_character );
-	fileMenu.add_command( label = 'Save Character', command = save_character );
+	fileMenu.add_command( label = 'Save Character', command = lambda: save_character( root ) );
 	fileMenu.add_separator();
 	fileMenu.add_command( label = 'Exit', command = root.quit );
 	menubar.add_cascade( label = 'File', menu = fileMenu );

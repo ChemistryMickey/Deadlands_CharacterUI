@@ -5,42 +5,36 @@
 	Author: Mickey T Da Silva
 	Version: 0.0
 	ToDo:
-		- Create Player Tab
 		- Create Equipment Tab
 		- Create Arcane Abilities Tab
 		- Create Edges and Hindrances Tab
 		- Load / Save Character Function
 		- Export as .txt function
 	ChangeLog:
-		2021-11-22 (Mickey):
-			- 
+		2021-11-23 (Mickey):
+			- Added chips and wounds to character tab (ch. tab complete?)
 """
 
 from tkinter import *
 from tkinter import ttk
 
 # Set path
-import sys, os, pathlib
+import sys, pathlib
 scriptPath = pathlib.Path( __file__ ).parent.resolve();
 subfunctionPath = '{}/subfunctions'.format( scriptPath );
 sys.path.append( subfunctionPath );
 
 # Import subfunctions
 from MDCG_log import db_log
+from save_character import save_character
 
 db_log( 'Imported all modules' );
-
 
 #========Start GUI=======
 
 root = Tk();
 root.title('Deadlands Character GUI');
-root.geometry('960x800');
-
-# Create Menubar
-from generate_menubar import generate_menubar
-menubar = generate_menubar( root );
-
+root.geometry('1500x800');
 
 # Create Tab Layout
 from generate_tabs import generate_tabs
@@ -49,15 +43,13 @@ from generate_tabs import generate_tabs
 
 # Create Character Tab
 from generate_character_tab import generate_character_tab
-generate_character_tab( characterTab );
+[woundDict, chipDict] = generate_character_tab( characterTab );
 
 	
 # Create Equipment Tab
-db_log( 'Preparing Equipment Tab Layout' );
-testLabel = Label( equipmentTab, text = 'Test Label' );
-testLabel.grid( row = 0, column = 0 );
-db_log( 'Created Equipment Tab Layout' );
-	
+from generate_equipment_tab import generate_equipment_tab
+generate_equipment_tab( equipmentTab );
+
 # Create Arcane Abilities Tab
 # ~ if( DEBUG_LEVEL == DEBUG_LEVELS['Debug'] ):
 	# ~ MDCG_tee('Preparing Arcane Abilities Tab Layout');
@@ -88,6 +80,18 @@ generate_character_notes_tab( characterNotesTab );
 from generate_RNG_tab import generate_RNG_tab
 generate_RNG_tab( RNGTab );
 
+# Assemble Character
+from create_new_character import create_new_character
+curChar = create_new_character();
+
+# Create Menubar
+from generate_menubar import generate_menubar
+menubar = generate_menubar( root, woundDict, chipDict );
+
+
 #=========END GUI============
+root.bind( '<Control-s>', lambda event: save_character(root, woundDict, chipDict) );
+root.bind( '<Control-q>', lambda event: root.destroy() );
+
 root.config( menu = menubar );
 root.mainloop();

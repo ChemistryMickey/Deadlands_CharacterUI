@@ -2,9 +2,7 @@ import inspect
 from datetime import datetime
 
 global DEBUG_LEVEL
-DEBUG_LEVELS = {'Error' : 0, 'Log' : 1, 'Debug' : 2}
-DEBUG_LEVEL = DEBUG_LEVELS['Debug'];
-
+from config import DEBUG_LEVEL
 
 def MDCG_log( strIn, logFile = ''):
 	#Print calling function information

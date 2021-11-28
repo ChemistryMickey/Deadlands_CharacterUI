@@ -3,14 +3,26 @@ from MDCG_log import db_log
 import itertools
 
 
-def roll_dice( numSides, numDice, enableExploding ):
+def roll_dice( numSides, numDice, enableExploding, explOffset ):
 	diceRolls = [];
 	for iDice in range( numDice ):
 		randInt = random.randint(1, numSides); #endpoint inclusive
 		
 		# Allow for explosions
 		if( enableExploding == 1 ):
-			while( randInt == numSides ):
+			#Find number required to get exploding dice
+			if( explOffset[-1] == 'x' ):
+				diceOffset = 0;
+			else:
+				diceOffset = int( explOffset[-1] );
+				
+			#Check to make sure that the explosion minimum is at least 1.
+			explGoal = numSides - diceOffset;
+			if( explGoal <= 1 ):
+				explGoal = 2;
+				
+			#Check if it's exploded
+			while( randInt >= explGoal ):
 				diceRolls.append( randInt );
 				randInt = random.randint(1, numSides);
 			

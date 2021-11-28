@@ -6,14 +6,14 @@ from datetime import datetime
 def generate_game_notes_tab( gameNotesTab ) :
 	db_log( 'Preparing Game Notes Tab' );
 
-	T = Text( gameNotesTab, height = 40, width = 50, relief = 'groove', state = 'normal', wrap = WORD, highlightcolor = '#000000' );
+	T = Text( gameNotesTab, height = 40, width = 100, relief = 'groove', state = 'normal', wrap = WORD, highlightcolor = '#000000' );
 	scroll = Scrollbar(gameNotesTab, command=T.yview)
 	T.configure( yscrollcommand = scroll.set );
 	
 	T.grid( row = 0, column = 0, padx = 10, pady = 10 );
 	scroll.grid( row = 0, column = 1, sticky = 'ns' )
 
-	entryButton = Button( gameNotesTab, text = "New Entry", height = 5, width = 20, command = lambda: write_new_entry( T ) );
+	entryButton = Button( gameNotesTab, text = "New Entry", height = 5, width = 10, command = lambda: write_new_entry( T ) );
 	entryButton.grid( row = 0, column = 2, padx = 10, pady = 10 );
 	
 	db_log( 'Created Game Notes Tab' );
