@@ -1,6 +1,6 @@
 class Character:
-	def __init__( self, name = '', charClass = '', attrib = [], subAttrib = [], \
-						wounds = [], chips = [], arcaneAbilities = [], EandD = [], equipment = [], charNotes = '', gameNotes = '' ):
+	def __init__( self, name = '', charClass = '', attrib = {}, subAttrib = {}, \
+						wounds = [], chips = [], arcaneAbilities = [], EandD = [], equipment = [], charNotes = {}, gameNotes = {} ):
 		#Inherent
 		self.name = name;
 		self.charClass = charClass;

@@ -18,7 +18,7 @@ def generate_game_notes_tab( gameNotesTab ) :
 	
 	db_log( 'Created Game Notes Tab' );
 
-	return True; #Stub
+	return ('Game Notes', T); #Stub
 	
 def write_new_entry( textObjectIn ):
 	db_log( 'Writing new game notes entry' );

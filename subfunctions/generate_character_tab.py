@@ -22,12 +22,13 @@ def generate_character_tab( characterTab ):
     charNameLabel.grid( row = 0, column = 0, padx = 10, pady = 10 );
     charName = Entry( mainFrame, width = 35, borderwidth = 5 );
     charName.grid( row = 0, column = 1, columnspan = 3, padx = 10, pady = 10 );
+    charNameTuple = (charNameLabel, charName);
 
     charClassLabel = Label( mainFrame, text = 'Class: ' );
     charClassLabel.grid( row = 0, column = 4, padx = 10, pady = 10 );
     className = Entry( mainFrame, width = 30, borderwidth = 5 );
     className.grid( row = 0, column = 5, columnspan = 2, padx = 10, pady = 10 );
-    
+    charClassTuple = (charClassLabel, className);
     maxRows = 8;
     
     # Going with a dictionary with 'attr' : ('attribute', Label, Entry)
@@ -92,9 +93,9 @@ def generate_character_tab( characterTab ):
     chipDict  = {};
     for iChip in range( len( chipNames ) ):
         chipVals[iChip].set(0); #default
-        chipDict[chipTypes[iChip]] = (Label( chipFrame, text = chipNames[iChip] ), OptionMenu( chipFrame, chipVals[iChip], *chipRange ));
+        chipDict[chipTypes[iChip]] = (Label( chipFrame, text = chipNames[iChip] ), chipVals[iChip], OptionMenu( chipFrame, chipVals[iChip], *chipRange ));
         chipDict[chipTypes[iChip]][0].grid( row = 0, column = iChip * 2, padx = 10, pady = 10 );
-        chipDict[chipTypes[iChip]][1].grid( row = 0, column = iChip * 2 + 1, padx = 10, pady = 10 );
+        chipDict[chipTypes[iChip]][2].grid( row = 0, column = iChip * 2 + 1, padx = 10, pady = 10 );
 
     db_log( 'Created Character Tab' );
-    return [woundDict, chipDict];
+    return [charNameTuple, charClassTuple, attrDict, subAtrDict, woundDict, chipDict];

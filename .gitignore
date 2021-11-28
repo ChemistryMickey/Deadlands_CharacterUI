@@ -1,2 +1,3 @@
 ./subfunction/__pycache__
 *.log
+/DeadlandsGUI.log

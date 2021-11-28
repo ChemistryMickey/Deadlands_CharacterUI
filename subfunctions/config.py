@@ -4,8 +4,8 @@ DEBUG_LEVEL = DEBUG_LEVELS['Debug'];
 
 
 attrAbr = ['cog', 'deft', 'know', 'mien', 'nimb', 'quick', 'smarts', 'spirit', 'str', 'vigor', 'pace', 'size', 'wind', 'grit'];
-attributeLabels = ["Cognition: ", "Deftness: ", "Knowledge: ", "Mien: ", "Nimbleness: ", "Quickness: ", \
-					"Smarts: ", "Spirit: ", "Strength: ", "Vigor: ", "Pace: ", "Size: ", "Wind: ", "Grit: "];
+attributeLabels = ["Cognition ", "Deftness ", "Knowledge ", "Mien ", "Nimbleness ", "Quickness ", \
+					"Smarts ", "Spirit ", "Strength ", "Vigor ", "Pace ", "Size ", "Wind ", "Grit "];
 					
 subAtrAbr = ['artillery', 'arts', 'scrut', 'search', 'track', 'bow', 'filch', 'lockpick', 'shoot', 'sleight', 'speed', \
 				 'throw', 'academia', 'area', 'demo', 'disguise', 'lang', 'mad', 'med', 'prof', 'sci', 'trade', 'animal', 'leader', 'overawe', \

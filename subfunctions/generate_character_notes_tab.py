@@ -14,4 +14,4 @@ def generate_character_notes_tab( characterNotesTab ) :
 
 	db_log( 'Created Character Notes Tab' );
 
-	return True;
+	return ('Character Notes', T);

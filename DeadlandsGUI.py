@@ -43,7 +43,8 @@ from generate_tabs import generate_tabs
 
 # Create Character Tab
 from generate_character_tab import generate_character_tab
-[woundDict, chipDict] = generate_character_tab( characterTab );
+[charNameTuple, charClassTuple, attrDict, \
+     subAtrDict, woundDict, chipDict] = generate_character_tab( characterTab );
 
 	
 # Create Equipment Tab
@@ -68,12 +69,12 @@ testLabel.grid( row = 0, column = 0 );
 
 # Create Game Happenings Tab
 from generate_game_notes_tab import generate_game_notes_tab
-generate_game_notes_tab( gameNotesTab );
+gameNotes = generate_game_notes_tab( gameNotesTab );
 
 
 # Create Character Notes Tab
 from generate_character_notes_tab import generate_character_notes_tab
-generate_character_notes_tab( characterNotesTab );
+characterNotes = generate_character_notes_tab( characterNotesTab );
 
 	
 # Create RNGesus Tab
@@ -86,11 +87,12 @@ curChar = create_new_character();
 
 # Create Menubar
 from generate_menubar import generate_menubar
-menubar = generate_menubar( root, woundDict, chipDict );
+menubar = generate_menubar( root, charNameTuple, charClassTuple, attrDict, subAtrDict, woundDict, chipDict, characterNotes, gameNotes );
 
 
 #=========END GUI============
-root.bind( '<Control-s>', lambda event: save_character(root, woundDict, chipDict) );
+root.bind( '<Control-s>', lambda event: save_character( charNameTuple, charClassTuple, attrDict, \
+                                                       subAtrDict, woundDict, chipDict, characterNotes, gameNotes ) );
 root.bind( '<Control-q>', lambda event: root.destroy() );
 
 root.config( menu = menubar );
