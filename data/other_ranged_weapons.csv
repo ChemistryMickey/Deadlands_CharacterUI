@@ -1,0 +1,7 @@
+Item,Ammo,RoF,Damage,Range Inc.,Price
+Bolas,Bolo,1,STR + 1d4,5,3
+Bow & Arrow,Arrow,1,STR + 1d6,10,3
+Dynamite,Stick,1,3d20 (BR 10),5,3
+Nitro,8 oz. Bottle,1,3d20 (BR 10),5,1.25
+Thrown knife,Knife,1,STR + 1d6,5,3
+Thrown spear,Spear,1,STR + 2d6,5,3

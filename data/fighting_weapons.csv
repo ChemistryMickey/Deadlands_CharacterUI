@@ -1,0 +1,14 @@
+Item,DB,Damage,Price
+Bolo,-,,
+Brass Knuckles,-,STR + 1d4,1
+"Club, small",-,STR + 1d4,-
+"Club, large",1,STR + 1d6,-
+Fist,-,STR + 1d4,-
+Knife,1,STR + 1d4,2
+"Knife, large",1,STR + 1d6,4
+Rapier,2,STR + 2d6,10
+Saber,2,STR + 2d8,15
+Spear,3,STR + 2d6,3
+Tomahawk,-,STR + 2d6,3
+Whip,1,STR + 1d4,10
+Lariat,-,,4
