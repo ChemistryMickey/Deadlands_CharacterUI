@@ -27,3 +27,5 @@ bodyPartLabels = ['Head', 'R. Arm', 'L. Arm', 'Guts', 'R. Leg', 'L. Leg'];
 bodyPartAbbr = ['head', 'rarm', 'larm', 'guts', 'rleg', 'lleg'];
 chipNames = ['White Chips', 'Red Chips', 'Blue Chips', 'Green Chips'];
 chipTypes = ['white', 'red', 'blue', 'green'];
+
+maxEandD = 5; #maximum number of edges and hinderances allowed. Determined by Marshal

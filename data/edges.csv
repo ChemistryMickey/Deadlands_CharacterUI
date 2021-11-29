@@ -1,0 +1,65 @@
+Edge,Points,Effect
+Arcane Background,3,"Huckster (ch. 6), Mad Scientist (ch. 7), Blessed (ch. 8), Shaman (ch. 9)"
+Belongins,1,"$500 cash, some shares in a profitable railroad, a fast horse, a fancy pistol, 12 silver bullets"
+Belongins,2,"$1000 cash, a boat, a work of art, a silver dagger, an incredibly fast horse"
+Belongins,3,"$5000 cash, a pistol used by Jesse James, a tomahawk blessed by a powerful shaman, a gatling gun, a riverboat"
+Belongins,4,"$20000 cash, a ship, a saloon or other business, a relic of specific but limited power"
+Belongins,5,"$50000 cash, a relic of power, a train, a pardon for all deeds past and present in a certain region or state"
+Big Ears,1,+2 to hearing cognition rolls
+Brave,2,+2 to guts checks
+Brawny,3,Must have at least 2d8 strength. +1 to size
+Dinero,1,"$250 starting funds, always has delayed access to $100"
+Dinero,2,"$500 starting funds, always has delayed access to $500"
+Dinero,3,"$1000 starting funds, always has delayed access to $2000"
+Dinero,4,"$2000 starting funds, always has delayed access to $5000"
+Dinero,5,"$5000 starting funds, always has delayed access to $10000"
+Don’t Get ‘im Riled,2,Add Xd4 to your hand-to-hand damage where X is the your highest wound penalty
+Eagle Eyes,1,+2 to any sight congition rolls
+Fleet-Footed,1,+1 higher than nimbleness
+Fleet-Footed,2,+2 higher than nimbleness
+Fleet-Footed,3,+3 higher than nimbleness
+Fleet-Footed,4,+4 higher than nimbleness
+Fleet-Footed,5,+5 higher than nimbleness
+Friends in High Places,1,Discuss with Marshal. A Texas Ranger with the Cavalry is about 3 points. A newspaper editor who keeps bailing you out of jail is about 2. Adjust accordingly
+Friends in High Places,2,Discuss with Marshal. A Texas Ranger with the Cavalry is about 3 points. A newspaper editor who keeps bailing you out of jail is about 2. Adjust accordingly
+Friends in High Places,3,Discuss with Marshal. A Texas Ranger with the Cavalry is about 3 points. A newspaper editor who keeps bailing you out of jail is about 2. Adjust accordingly
+Friends in High Places,4,Discuss with Marshal. A Texas Ranger with the Cavalry is about 3 points. A newspaper editor who keeps bailing you out of jail is about 2. Adjust accordingly
+Friends in High Places,5,Discuss with Marshal. A Texas Ranger with the Cavalry is about 3 points. A newspaper editor who keeps bailing you out of jail is about 2. Adjust accordingly
+Gift of Gab,1,"Given a few minutes, your character has an effective oral skill of 1 in any language"
+Keen,3,"+2 to any cognition, search, trackin' or scrutinize rolls"
+Kemosabe,1,Knowledge of a culture and a few friends within it.
+Kemosabe,2,Knowledge of a culture and a few friends within it.
+Law Man,1,Marshal – Authority within a town/region
+Law Man,3,Sheriff – Authority in a county
+Law Man,5,US Marshal – Authority across the country
+Level-Headed,5,"Immediately after drawing action cards, your character can discard their lowest card and draw another. If the character draws a black Joker on the first draw, they’re out of luck and can’t draw again"
+Light Sleeper,1,+2 to cognition rolls made when you need to wake up quickly
+Luck o’ the Irish,5,Draw an extra chip at the beginning of each session. This chip may not be converted into bounty points
+Mechanically Inclined,1,+2 to tinkering and mad science
+Nerves o’ Steel,1,"Whenever your character fails a guts check and is forced to flee, the character can choose to stand their ground. They still suffer any other penalties though"
+Purty,1,+2 to most persuasion rolls or other cases where looks matter
+Rank,1,Enlisted Man
+Rank,2,Sergeant – commands 50 cavalry or 100 infantry
+Rank,3,Lieutenant or Captain – commands 1 troop or company
+Rank,4,Major or Colonel – Commands 8 troops or companies
+Rank,5,"General – Commands an entire force, usually no more than a brigade, typically 2-4 regiments out West. Higher ranking generals should never be player characters"
+Renown,1,"Well known among a small group (town, US marshals, sportsmen, etc.)"
+Renown,3,"Well known among a large group (county, minor national celebrity)"
+Renown,5,"Known everywhere (major celebrity, war hero)"
+Sand,1,+1 to any stun and recovery check
+Sand,2,+2 to any stun and recovery check
+Sand,3,+3 to any stun and recovery check
+Sand,4,+4 to any stun and recovery check
+Sand,5,+5 to any stun and recovery check
+Sense o’ Direction,1,"To determine direction, make a Fair (5) Cognition check. With a Hard (9) Smarts roll, your character knows what time it is"
+Sidekick,5,Discuss with Marshal. You get a buddy! Leaving them for dead may make them an enemy if they survive though…
+“The Stare”,1,+2 to overawe as long as the victim is close enough to look into your steely gaze (<30 feet)
+Thick-Skinned,3,-1 to wound penalty
+Tough as Nails,1,+2 to Wind
+Tough as Nails,2,+4 to Wind
+Tough as Nails,3,+6 to Wind
+Tough as Nails,4,+8 to Wind
+Tough as Nails,5,+10 to Wind
+Two-Fisted,3,"Ignore -4 penalty for using offhand. If you’re using two guns or two-handed weapons, you’ll still need to apply the -2 penalty for using a second weapon though"
+Veteran o’ the Weird West,0,+15 points to buy edges or traits. Discuss with Marshal how they want to balance this. No points are free.
+“The Voice”,1,"Choose: Soothing voice (+2 to persuasion rolls in calm, seductive, or peaceful situations), Threatening (+2 to overawe), Grating (+2 to ridicule). You can buy multiple voices for your hero for 1 point each."
