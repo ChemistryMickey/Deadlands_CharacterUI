@@ -1,6 +1,5 @@
 import json
 from Character import Character
-from tkinter import StringVar
 from MDCG_log import db_log
 
 
@@ -67,12 +66,3 @@ def get_current_character( charNameTuple, charClassTuple, attrDict, subAtrDict, 
     db_log( curChar.gameNotes );
     #Build character
     return curChar;
-
-def all_children (wid) :
-    _list = wid.winfo_children()
-
-    for item in _list :
-        if item.winfo_children() :
-            _list.extend(item.winfo_children())
-
-    return _list
