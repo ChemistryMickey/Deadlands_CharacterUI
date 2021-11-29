@@ -1,0 +1,108 @@
+Hinderance,Points,Effect
+Ailing,1,-2 from any persuasion and sneak checks
+Ailing,3,"At the start of each game session, make a Fair (5) Vigor roll. If the player fails, they suffer -4 to all tasks they perform this session"
+Ailing,5,"At the start of each game session, make a Onerous (7) Vigor roll. If the player fails, death’s door swings wide"
+All Thumbs,2,-2 to repair machinery
+Bad Ears,3,-2 to all hearing based cognition tests
+Bad Ears,5,Deaf
+Bad Eyes,3,-2 to all trait and skill rolls requiring the player to see farther than 20 yards
+Bad Eyes,5,-4 to all trait and skill rolls requiring the player to see farther than 20 yards
+Bad Luck,5,"If you bust, the worst possible outcome is used"
+Big Britches,3,Your character is severely overconfident and never turns down a challenge
+Big Mouth,3,Your character speaks before they think
+Big ‘Un,1,+1 to hero's size and reduce movement by one step. Maximum nimbleness is d10
+Big ‘Un,2,+2 to hero's size and reduce movement by two steps. Maximum nimbleness is d8
+Bloodthirsty,2,Enjoys confrontations and rarely takes prisoners
+Cautious,3,Your character likes to plan before doing any action
+Curious,3,Your hero wants to know all they can about everything
+Clueless,3,-2 from all perceptive cognition tests
+Deathwish,5,Your character is suicidal and takes crazy risks
+Doubting Thomas,3,Your character is skeptical
+Enemy,1,Marshal’s discretion 
+Enemy,2,Marshal’s discretion 
+Enemy,3,Marshal’s discretion 
+Enemy,4,Marshal’s discretion 
+Enemy,5,Marshal’s discretion 
+Ferner,3,Your character will sometimes be the victim of intolerance
+Geezer,3,"-2 to Vigor and Pace, +5 points to buy any knowledge based skills (vigor min d4, pace min 2)"
+Geezer,5,"-4 to Vigor and Pace, +10 points to buy any knowledge based skills (vigor min d4, pace min 2)"
+Greedy,2,Money and power mean everything
+Grim Servant O’ Death,5,Local lawmen and judges don’t like your character. People seem to end up dead around you
+Habit,1,-1 from persuasion rolls
+Habit,2,-2 from persuasion rolls
+Habit,3,-3 from persuasion rolls
+Hankerin’,1,-2 from mental skills if substance isn't imbibed in last 24 hours
+Hankerin’,3,-4 from mental and corporeal skill is substance isn't imbibed in last 48 hours
+Heavy Sleeper,1,-2 from hero's cognition rolls made to wake up in an emergency
+Heroic,3,Always helps those in need eventually
+High-Falutin’,2,-2 from any friendly persuasion rolls you make toward those who know your hero thinks they are beneath them in status
+Illiterate,3,Can’t read
+Impulsive,3,Hate cautious people. Go off without a plan
+Intolerance,1,There are classes of folks your character just doesn’t like
+Intolerance,2,There are classes of folks your character just doesn’t like
+Intolerance,3,There are classes of folks your character just doesn’t like
+Kid,2,11-15 years old. Reduce strength and knowledge by two steps to a minimum of d4
+Kid,4,8-10 years old. Reduce strength and knowledge by two steps to a minimum of d4
+Law o’ the West,3,+2 to any negotiations or friendly persuasion attempts whenever your character's honorable reputation is known and might make a difference
+Lame,3,-2 to Pace (min of 2). -2 to all dodge rolls and mobility checks
+Lame,5,"Pace is 2 with crutches, 1 without. -4 to all dodge rolls and mobility checks"
+Locos,1,Discuss with Marshal. Phobias tend to be -2 penalties. Severe phobias inflict -4 penalties
+Locos,2,Discuss with Marshal. Phobias tend to be -2 penalties. Severe phobias inflict -4 penalties
+Locos,3,Discuss with Marshal. Phobias tend to be -2 penalties. Severe phobias inflict -4 penalties
+Locos,4,Discuss with Marshal. Phobias tend to be -2 penalties. Severe phobias inflict -4 penalties
+Locos,5,Discuss with Marshal. Phobias tend to be -2 penalties. Severe phobias inflict -4 penalties
+Loyal,3,Your character is loyal to their friends
+Lyin’ Eyes,3,"-4 to bluff rolls and your character cannot mislead, deceive or omit the truth from others"
+Miser,3,Your character can only buy “El Cheapo” gear
+Mean as a Rattler,2,-2 from friendly persuasion attempts. +2 to hostile persuasion or overawe rolls
+Night Terrors,5,"Make an Onerous (7) Spirit check at the beginning of each session immediately after drawing fate chips. Chips left over from the previous session may be spent on this roll but those you just drew cannot. If you fail, your character loses their lowest value chip. Go bust and your character loses their highest value fate chip"
+Oath,1,Value depends on the risk and how often the oath comes into play
+Oath,2,Value depends on the risk and how often the oath comes into play
+Oath,3,Value depends on the risk and how often the oath comes into play
+Oath,4,Value depends on the risk and how often the oath comes into play
+Oath,5,Value depends on the risk and how often the oath comes into play
+Obligation,1,Not the same as Oath but should be a duty / service your character must periodically execute. Value depends on risk and frequency.
+Obligation,2,Not the same as Oath but should be a duty / service your character must periodically execute. Value depends on risk and frequency.
+Obligation,3,Not the same as Oath but should be a duty / service your character must periodically execute. Value depends on risk and frequency.
+Obligation,4,Not the same as Oath but should be a duty / service your character must periodically execute. Value depends on risk and frequency.
+Obligation,5,Not the same as Oath but should be a duty / service your character must periodically execute. Value depends on risk and frequency.
+Outlaw,1,Discuss with Marshal. Your character may range from occasional thief (1) to black-hearted killer (5) and the law responds in kind.
+Outlaw,2,Discuss with Marshal. Your character may range from occasional thief (1) to black-hearted killer (5) and the law responds in kind.
+Outlaw,3,Discuss with Marshal. Your character may range from occasional thief (1) to black-hearted killer (5) and the law responds in kind.
+Outlaw,4,Discuss with Marshal. Your character may range from occasional thief (1) to black-hearted killer (5) and the law responds in kind.
+Outlaw,5,Discuss with Marshal. Your character may range from occasional thief (1) to black-hearted killer (5) and the law responds in kind.
+One-Armed Bandit,3,-4 to any tests requiring two hands
+Pacifist,3,Won’t kill unless it’s unavoidable
+Pacifist,5,Won’t kill under any circumstances
+Randy,3,"-4 to any persuasion rolls a man makes on a woman who isn't ""of a certain profession"" while women get a +4 to any persuasion rolls against men"
+Scrawny,5,-1 from size. Max strength is d10
+Self-Righteous,3,Your character believes everything they do serves some greater cause and never backs down
+Slowpoke,1,Pace reduced by 1 to a minimum of 2
+Slowpoke,2,Pace reduced by 2 to a minimum of 2
+Slowpoke,3,Pace reduced by 3 to a minimum of 2
+Slowpoke,4,Pace reduced by 4 to a minimum of 2
+Slowpoke,5,Pace reduced by 5 to a minimum of 2
+Squeaky,2,-2 to any will rolls that involve voice
+Squeamish,3,-2 Guts checks caused by gory scenes
+Stubborn,2,Your character always wants to do things their way.
+Superstitious,2,Your character tries to live their life by signs and omens
+Tinhorn,2,"Big talkers, usually two-dollar words and brag about their families"
+Thin-skinned,3,+1 to your wound penalty whenever your character is wounded
+Tuckered,1,-1 to Wind to a minimum of 4
+Tuckered,2,-2 to Wind to a minimum of 4
+Tuckered,3,-3 to Wind to a minimum of 4
+Tuckered,4,-4 to Wind to a minimum of 4
+Tuckered,5,-5 to Wind to a minimum of 4
+Ugly as Sin,1,-2 from friendly persuasion rolls when looks matter. +2 when such looks might help like overawe or hostile persuasion checks.
+Vengeful,3,Your character must always attempt to right a wrong committed against them
+Wanted,1,Thief – Wanted for minor crimes in a single town/county or major crimes in a foreign country
+Wanted,2,Swindler – Wanted for a variety of crimes in different places
+Wanted,3,Outlaw – Wanted in either the North or South but not both
+Wanted,4,Desperado – Wanted in both the North and the South
+Wanted,5,Villain – Wanted everywhere. Dead. Not alive.
+Yearnin’,1,Your character strives towards a goal. Discuss with the Marshal what this goal is and how much it hinders you.
+Yearnin’,2,Your character strives towards a goal. Discuss with the Marshal what this goal is and how much it hinders you.
+Yearnin’,3,Your character strives towards a goal. Discuss with the Marshal what this goal is and how much it hinders you.
+Yearnin’,4,Your character strives towards a goal. Discuss with the Marshal what this goal is and how much it hinders you.
+Yearnin’,5,Your character strives towards a goal. Discuss with the Marshal what this goal is and how much it hinders you.
+Yeller,5,-2 from Guts and persuasion rolls made on those with no respect for cowards like you

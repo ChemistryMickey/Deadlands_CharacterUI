@@ -61,12 +61,8 @@ testLabel.grid( row = 0, column = 0 );
 	# ~ MDCG_tee('Created Arcane Abilities Tab Layout');
 	
 # Create Edges and Hindrances Tab
-# ~ if( DEBUG_LEVEL == DEBUG_LEVELS['Debug'] ):
-	# ~ MDCG_tee('Preparing Edges and Hindrances Tab Layout');
-testLabel = Label( edgesTab, text = 'Test Label' );
-testLabel.grid( row = 0, column = 0 );
-# ~ if( DEBUG_LEVEL == DEBUG_LEVELS['Debug'] ):
-	# ~ MDCG_tee('Created Edges and Hindrances Tab Layout');
+from generate_EandD_tab import generate_EandD_tab
+EandD = generate_EandD_tab( edgesTab );
 
 # Create Game Happenings Tab
 from generate_game_notes_tab import generate_game_notes_tab
