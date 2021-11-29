@@ -4,8 +4,8 @@ DEBUG_LEVEL = DEBUG_LEVELS['Debug'];
 
 
 attrAbr = ['cog', 'deft', 'know', 'mien', 'nimb', 'quick', 'smarts', 'spirit', 'str', 'vigor', 'pace', 'size', 'wind', 'grit'];
-attributeLabels = ["Cognition ", "Deftness ", "Knowledge ", "Mien ", "Nimbleness ", "Quickness ", \
-					"Smarts ", "Spirit ", "Strength ", "Vigor ", "Pace ", "Size ", "Wind ", "Grit "];
+attributeLabels = ["Cognition", "Deftness", "Knowledge", "Mien", "Nimbleness", "Quickness", \
+					"Smarts", "Spirit", "Strength", "Vigor", "Pace", "Size", "Wind", "Grit"];
 					
 subAtrAbr = ['artillery', 'arts', 'scrut', 'search', 'track', 'bow', 'filch', 'lockpick', 'shoot', 'sleight', 'speed', \
 				 'throw', 'academia', 'area', 'demo', 'disguise', 'lang', 'mad', 'med', 'prof', 'sci', 'trade', 'animal', 'leader', 'overawe', \
@@ -20,4 +20,10 @@ subAttributeLabels = ["Artillery (Cog)", "Arts (Cog)", "Scrutinize (Cog)", "Sear
 							"Fightin' (Nimb)", "Horse Ridin' (Nimb)", "Sneak (Nimb)", "Swimmin' (Nimb)", "Teamster (Nimb)", \
 							"Quick Draw (Quick)", "Bluff (Smarts)", "Gamblin' (Smarts)", "Ridicule (Smarts)", "Scroungin' (Smarts)", \
 							"Streetwise (Smarts)", "Survival (Smarts)", "Tinkerin' (Smarts)", "Faith (Spirit)", "Guts (Spirit)"];
-
+                      
+                      
+woundLevels = ['None', 'Light', 'Heavy', 'Serious', 'Critical', 'Maimed'];
+bodyPartLabels = ['Head', 'R. Arm', 'L. Arm', 'Guts', 'R. Leg', 'L. Leg'];
+bodyPartAbbr = ['head', 'rarm', 'larm', 'guts', 'rleg', 'lleg'];
+chipNames = ['White Chips', 'Red Chips', 'Blue Chips', 'Green Chips'];
+chipTypes = ['white', 'red', 'blue', 'green'];

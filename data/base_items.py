@@ -79,7 +79,7 @@ shootingIrons = {
 				'range increment' : 5,
 				'price' : 6
 			},
-			'Ruptertus Pepperbox' : {'name' : 'Gatling Gun', 
+			'Ruptertus Pepperbox' : {'name' : 'Ruptertus Pepperbox', 
 				'class' : 'Weapon',
 				'subclass' : 'Derringers & Pepperboxes',
 				'shots' : 8,
@@ -249,7 +249,7 @@ shootingIrons = {
 				'range increment' : 20,
 				'price' : 24
 			},
-			'Bullard Express' : {'name' : 'Gatling Gun', 
+			'Bullard Express' : {'name' : 'Bullard Express', 
 				'class' : 'Weapon',
 				'subclass' : 'Rifles',
 				'shots' : 11,

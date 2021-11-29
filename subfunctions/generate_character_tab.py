@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from MDCG_log import db_log
 
+from config import woundLevels, bodyPartLabels, bodyPartAbbr, chipNames, chipTypes
 
 def generate_character_tab( characterTab ):
     db_log( 'Preparing Character Tab' );
@@ -20,54 +21,58 @@ def generate_character_tab( characterTab ):
     
     charNameLabel = Label( mainFrame, text = 'Character Name:' );
     charNameLabel.grid( row = 0, column = 0, padx = 10, pady = 10 );
-    charName = Entry( mainFrame, width = 35, borderwidth = 5 );
+    charNameStr = StringVar();
+    charName = Entry( mainFrame, textvariable = charNameStr, width = 35, borderwidth = 5 );
     charName.grid( row = 0, column = 1, columnspan = 3, padx = 10, pady = 10 );
-    charNameTuple = (charNameLabel, charName);
+    charNameTuple = (charNameLabel, charNameStr, charName);
 
     charClassLabel = Label( mainFrame, text = 'Class: ' );
     charClassLabel.grid( row = 0, column = 4, padx = 10, pady = 10 );
-    className = Entry( mainFrame, width = 30, borderwidth = 5 );
+    classStr = StringVar();
+    className = Entry( mainFrame, textvariable = classStr, width = 30, borderwidth = 5 );
     className.grid( row = 0, column = 5, columnspan = 2, padx = 10, pady = 10 );
-    charClassTuple = (charClassLabel, className);
+    charClassTuple = (charClassLabel, classStr, className);
     maxRows = 8;
+    maxCols = 14;
     
     # Going with a dictionary with 'attr' : ('attribute', Label, Entry)
-    from config import attrAbr, attributeLabels
+    from config import attributeLabels
     attrDict = {};
     curRow = 0;
     curCol = -2;
-    halfAttr = int( len( attrAbr ) / 2 );
-    for iCol in range( 0, halfAttr ):
+    attrStrs = [];
+    for iCol in range( len( attributeLabels ) ):
         curCol += 2;
-        attrDict[attrAbr[iCol]] = (Label( attrFrame, text = attributeLabels[iCol] ), Entry( attrFrame, width = 10, borderwidth = 3 ));
-        attrDict[attrAbr[iCol]][0].grid( row = 0, column = curCol, padx = 10, pady = 10 );
-        attrDict[attrAbr[iCol]][1].grid( row = 0, column = curCol + 1, padx = 10, pady = 10 );
-        
-        attrDict[attrAbr[iCol + halfAttr]] = (Label( attrFrame, text = attributeLabels[iCol + halfAttr] ), Entry( attrFrame, width = 10, borderwidth = 3 ));
-        attrDict[attrAbr[iCol + halfAttr]][0].grid( row = 1, column = curCol, padx = 10, pady = 10 );
-        attrDict[attrAbr[iCol + halfAttr]][1].grid( row = 1, column = curCol + 1, padx = 10, pady = 10 );
-        
+        if( curCol == maxCols ):
+            curCol = 0;
+            curRow += 1;
+            
+        attrStrs.append( StringVar() );
+        attrDict[attributeLabels[iCol]] = (Label( attrFrame, text = attributeLabels[iCol] ), attrStrs[iCol], Entry( attrFrame, textvariable = attrStrs[iCol], \
+                                    width = 10, borderwidth = 3 ));
+        attrDict[attributeLabels[iCol]][0].grid( row = curRow, column = curCol, padx = 10, pady = 10 );
+        attrDict[attributeLabels[iCol]][2].grid( row = curRow, column = curCol + 1, padx = 10, pady = 10 );
 
     #46 subatributes
-    from config import subAtrAbr, subAttributeLabels
+    from config import subAttributeLabels
     curCol = 0;
     curRow = 0;
+    subAttrStrs = [];
     subAtrDict = {};
-    for iSubAtr in range( len( subAtrAbr ) ):
+    for iSubAtr in range( len( subAttributeLabels ) ):
         curRow += 1;
-        subAtrDict[subAtrAbr[iSubAtr]] = (Label( subAttrFrame, text = subAttributeLabels[iSubAtr], font = ('Helvatica', 8) ), \
-                                                     Entry( subAttrFrame, width = 5, borderwidth = 3, font = ('Helvatica', 8) ));
-        subAtrDict[subAtrAbr[iSubAtr]][0].grid( row = curRow, column = curCol, padx = 10, pady = 10 );
-        subAtrDict[subAtrAbr[iSubAtr]][1].grid( row = curRow, column = curCol + 1, padx = 10, pady = 10 );
+        
+        subAttrStrs.append( StringVar() );
+        subAtrDict[subAttributeLabels[iSubAtr]] = (Label( subAttrFrame, text = subAttributeLabels[iSubAtr], font = ('Helvatica', 8) ), subAttrStrs[iSubAtr], \
+                                                     Entry( subAttrFrame, textvariable = subAttrStrs[iSubAtr], width = 5, borderwidth = 3, font = ('Helvatica', 8) ));
+        subAtrDict[subAttributeLabels[iSubAtr]][0].grid( row = curRow, column = curCol, padx = 10, pady = 10 );
+        subAtrDict[subAttributeLabels[iSubAtr]][2].grid( row = curRow, column = curCol + 1, padx = 10, pady = 10 );
         
         if( curRow == maxRows ):
             curRow = 0;
             curCol += 2;
     
     # Wounds
-    woundLevels = ['None', 'Light', 'Heavy', 'Serious', 'Critical', 'Maimed'];
-    bodyPartLabels = ['Head', 'R. Arm', 'L. Arm', 'Guts', 'R. Leg', 'L. Leg'];
-    bodyPartAbbr = ['head', 'rarm', 'larm', 'guts', 'rleg', 'lleg'];
     woundVals = [];
     woundDict = {};
     for iPart in range( len( bodyPartAbbr ) ):
@@ -86,10 +91,8 @@ def generate_character_tab( characterTab ):
         woundDict[bodyPartAbbr[iPart + int( len( bodyPartAbbr ) / 2 ) ]][3].grid( row = 1, column = curCol + 1, padx = 10, pady = 10 );
         
     #Chips
-    chipNames = ['White Chips', 'Red Chips', 'Blue Chips', 'Green Chips'];
-    chipTypes = ['white', 'red', 'blue', 'green'];
     chipVals = [StringVar(), StringVar(), StringVar(), StringVar()]
-    chipRange = range(0, 7);
+    chipRange = range(0, 10);
     chipDict  = {};
     for iChip in range( len( chipNames ) ):
         chipVals[iChip].set(0); #default

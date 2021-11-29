@@ -1,11 +1,11 @@
 class Character:
-	def __init__( self, name = '', charClass = '', attrib = {}, subAttrib = {}, \
+	def __init__( self, name = '', charClass = '', attrib = {}, subAttr = {}, \
 						wounds = [], chips = [], arcaneAbilities = [], EandD = [], equipment = [], charNotes = {}, gameNotes = {} ):
 		#Inherent
 		self.name = name;
 		self.charClass = charClass;
 		self.attrib = attrib;
-		self.subAttrib = subAttrib;
+		self.subAttr = subAttr;
 		self.wounds = wounds;
 		self.chips = chips;
 		

@@ -27,6 +27,7 @@ sys.path.append( subfunctionPath );
 # Import subfunctions
 from MDCG_log import db_log
 from save_character import save_character
+from load_character import load_character
 
 db_log( 'Imported all modules' );
 
@@ -93,6 +94,8 @@ menubar = generate_menubar( root, charNameTuple, charClassTuple, attrDict, subAt
 #=========END GUI============
 root.bind( '<Control-s>', lambda event: save_character( charNameTuple, charClassTuple, attrDict, \
                                                        subAtrDict, woundDict, chipDict, characterNotes, gameNotes ) );
+root.bind( '<Control-l>', lambda event: load_character( charNameTuple, charClassTuple, attrDict, \
+                                                       subAtrDict, woundDict, chipDict, characterNotes, gameNotes) );
 root.bind( '<Control-q>', lambda event: root.destroy() );
 
 root.config( menu = menubar );

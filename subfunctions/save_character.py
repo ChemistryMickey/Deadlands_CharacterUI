@@ -2,6 +2,8 @@ import json
 from Character import Character
 from tkinter import StringVar
 from MDCG_log import db_log
+
+
 def save_character( charNameTuple, charClassTuple, attrDict, subAtrDict, \
                    woundDict, chipDict, characterNotes, gameNotes ):
     #Get Current Character
@@ -11,7 +13,7 @@ def save_character( charNameTuple, charClassTuple, attrDict, subAtrDict, \
     charJSON = json.dumps( curChar.__dict__, indent = 4 );
     db_log( 'Saving... {}'.format( charJSON ) );
     #write JSON dictionary to file
-    f = open( './data/{}.txt'.format( curChar.name ), 'w' );
+    f = open( './data/{}.dead'.format( curChar.name ), 'w' );
     f.write( charJSON );
     f.close();
     db_log( 'Saved!' );
@@ -23,15 +25,15 @@ def get_current_character( charNameTuple, charClassTuple, attrDict, subAtrDict, 
     db_log( 'Name: {}'.format( curChar.name ) );
     
     # Get character class
-    curChar.curClass = charClassTuple[1].get();
-    db_log( 'Class: {}'.format( curChar.curClass ) );
+    curChar.charClass = charClassTuple[1].get();
+    db_log( 'Class: {}'.format( curChar.charClass ) );
     
     # Get Attributes
-    curChar.attr = {};
+    curChar.attrib = {};
     for item in attrDict:
-        curChar.attr[attrDict[item][0]['text']] = attrDict[item][1].get();
+        curChar.attrib[attrDict[item][0]['text']] = attrDict[item][1].get();
 #        print( '{}: {} --> {}'.format( item, attrDict[item][0]['text'], attrDict[item][1].get() ) );
-    db_log( curChar.attr );
+    db_log( curChar.attrib );
         
     # Get Subattributes
     curChar.subAttr = {};
