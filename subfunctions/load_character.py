@@ -2,17 +2,21 @@ from MDCG_log import db_log
 from tkinter import filedialog as fd
 import json
 
-from config import attributeLabels, subAttributeLabels, woundLevels, bodyPartLabels, bodyPartAbbr, chipNames, chipTypes
+from config import attributeLabels, subAttributeLabels, maxEandD,\
+                bodyPartLabels, bodyPartAbbr, chipNames, chipTypes
 
 def load_character(charNameTuple, charClassTuple, attrDict, \
-                       subAtrDict, woundDict, chipDict, characterNotes, gameNotes):
+                       subAtrDict, woundDict, chipDict, \
+                       characterNotes, gameNotes, edgeList, hindList):
     curCharFile = open_character_file();
     db_log( 'Successfully opened {} file!'.format( curCharFile ) );
     
     curChar = read_character_file(curCharFile);
     db_log( 'Successfully read character: {}'.format( curChar ) );
     
-    write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, subAtrDict, woundDict, chipDict, characterNotes, gameNotes );
+    write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
+                           subAtrDict, woundDict, chipDict, \
+                           characterNotes, gameNotes, edgeList, hindList );
     db_log( 'Successfully wrote character data to GUI!' );
     
 def open_character_file():
@@ -29,7 +33,9 @@ def read_character_file( curCharFile ):
     
     return loadedChar;
     
-def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, subAtrDict, woundDict, chipDict, characterNotes, gameNotes ):
+def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
+                           subAtrDict, woundDict, chipDict, \
+                           characterNotes, gameNotes, edgeList, hindList ):
     charNameTuple[1].set(curChar['name']);
     charClassTuple[1].set(curChar['charClass']);
     
@@ -58,7 +64,19 @@ def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, su
     #Write AA
     
     #Write EandD
+    curEandD = curChar['EandD'];
+    curEandD_keys = list( curEandD.keys() );
+    db_log( 'Current Edges and Hinderances: {}'.format( curEandD_keys ) );
+    for iEdge in range( maxEandD ):
+        edgeList[iEdge][0].set( curEandD_keys[iEdge] );
+        edgeList[iEdge][2].set( curEandD[curEandD_keys[iEdge]]['Value'] );
+        edgeList[iEdge][4].set( curEandD[curEandD_keys[iEdge]]['Effect'] );
     
+    for iHind in range( maxEandD ):
+        hindList[iHind][0].set( curEandD_keys[iHind + maxEandD] );
+        hindList[iHind][2].set( curEandD[curEandD_keys[iHind + maxEandD]]['Value'] );
+        hindList[iHind][4].set( curEandD[curEandD_keys[iHind + maxEandD]]['Effect'] );
+        
     #Write Game Notes
     curLog = curChar['gameNotes'];
     gameNotes[1].insert( "1.0", curLog['Game Notes'] );

@@ -62,7 +62,7 @@ testLabel.grid( row = 0, column = 0 );
 	
 # Create Edges and Hindrances Tab
 from generate_EandD_tab import generate_EandD_tab
-EandD = generate_EandD_tab( edgesTab );
+[edgeList, hindList] = generate_EandD_tab( edgesTab );
 
 # Create Game Happenings Tab
 from generate_game_notes_tab import generate_game_notes_tab
@@ -84,14 +84,16 @@ curChar = create_new_character();
 
 # Create Menubar
 from generate_menubar import generate_menubar
-menubar = generate_menubar( root, charNameTuple, charClassTuple, attrDict, subAtrDict, woundDict, chipDict, characterNotes, gameNotes );
+menubar = generate_menubar( root, charNameTuple, charClassTuple, attrDict, \
+                       subAtrDict, woundDict, chipDict, \
+                       characterNotes, gameNotes, edgeList, hindList );
 
 
 #=========END GUI============
 root.bind( '<Control-s>', lambda event: save_character( charNameTuple, charClassTuple, attrDict, \
-                                                       subAtrDict, woundDict, chipDict, characterNotes, gameNotes ) );
+                                                       subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList ) );
 root.bind( '<Control-l>', lambda event: load_character( charNameTuple, charClassTuple, attrDict, \
-                                                       subAtrDict, woundDict, chipDict, characterNotes, gameNotes) );
+                                                       subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList) );
 root.bind( '<Control-q>', lambda event: root.destroy() );
 
 root.config( menu = menubar );

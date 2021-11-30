@@ -1,23 +1,36 @@
 import json
 from Character import Character
 from MDCG_log import db_log
-
+from config import maxEandD
+from os.path import exists
+from tkinter import messagebox
 
 def save_character( charNameTuple, charClassTuple, attrDict, subAtrDict, \
-                   woundDict, chipDict, characterNotes, gameNotes ):
+                   woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList ):
     #Get Current Character
-    curChar = get_current_character(charNameTuple, charClassTuple, attrDict, subAtrDict, woundDict, chipDict, characterNotes, gameNotes)
+    curChar = get_current_character(charNameTuple, charClassTuple, attrDict, \
+                                    subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList)
     db_log( 'Gathered Current Caracter Data' );
     #create JSON dictionary of character
     charJSON = json.dumps( curChar.__dict__, indent = 4 );
     db_log( 'Saving... {}'.format( charJSON ) );
     #write JSON dictionary to file
-    f = open( './data/{}.dead'.format( curChar.name ), 'w' );
-    f.write( charJSON );
-    f.close();
-    db_log( 'Saved!' );
+    filePath = './data/{}.dead'.format( curChar.name );
+    if( exists( filePath ) ):
+        overwriteOK = check_if_overwrite_ok();
+    
+    if( overwriteOK ):
+        f = open( './data/{}.dead'.format( curChar.name ), 'w' );
+        f.write( charJSON );
+        f.close();
+        db_log( 'Saved!' );
+    return;
+    
+def check_if_overwrite_ok():
+    return messagebox.askokcancel("Overwite Character File", "OK to overwrite existing character?");
 
-def get_current_character( charNameTuple, charClassTuple, attrDict, subAtrDict, woundDict, chipDict, characterNotes, gameNotes ):
+def get_current_character( charNameTuple, charClassTuple, attrDict,\
+                          subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList ):
     curChar = Character();
     # Get character name
     curChar.name = charNameTuple[1].get();
@@ -43,7 +56,14 @@ def get_current_character( charNameTuple, charClassTuple, attrDict, subAtrDict, 
     # Get Arcane Abilities in AB tab
     
     # Get EandD in EandD tab
-    
+    curChar.EandD.clear();
+    for iEdge in range( maxEandD ):
+        curChar.EandD[edgeList[iEdge][0].get()] = {'Value'  : edgeList[iEdge][2].get(), \
+                                                   'Effect' : edgeList[iEdge][4].get() }
+        
+    for iHind in range( maxEandD ):
+        curChar.EandD[hindList[iHind][0].get()] = {'Value' : hindList[iHind][2].get(), \
+                                                  'Effect' : hindList[iHind][4].get() }
     # Get Equipment in equipment tab
     
     # Get Wounds
