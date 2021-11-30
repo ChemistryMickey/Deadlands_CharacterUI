@@ -6,10 +6,10 @@ from os.path import exists
 from tkinter import messagebox
 
 def save_character( charNameTuple, charClassTuple, attrDict, subAtrDict, \
-                   woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList ):
+                   woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList, equipList ):
     #Get Current Character
     curChar = get_current_character(charNameTuple, charClassTuple, attrDict, \
-                                    subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList)
+                                    subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList, equipList)
     db_log( 'Gathered Current Caracter Data' );
     #create JSON dictionary of character
     charJSON = json.dumps( curChar.__dict__, indent = 4 );
@@ -18,6 +18,8 @@ def save_character( charNameTuple, charClassTuple, attrDict, subAtrDict, \
     filePath = './data/characters/{}.dead'.format( curChar.name );
     if( exists( filePath ) ):
         overwriteOK = check_if_overwrite_ok();
+    else:
+        overwriteOK = True;
     
     if( overwriteOK ):
         f = open( filePath, 'w' );
@@ -30,7 +32,7 @@ def check_if_overwrite_ok():
     return messagebox.askokcancel("Overwite Character File", "OK to overwrite existing character?");
 
 def get_current_character( charNameTuple, charClassTuple, attrDict,\
-                          subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList ):
+                          subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList, equipList ):
     curChar = Character();
     # Get character name
     curChar.name = charNameTuple[1].get();
@@ -65,6 +67,7 @@ def get_current_character( charNameTuple, charClassTuple, attrDict,\
         curChar.EandD[hindList[iHind][0].get()] = {'Value' : hindList[iHind][2].get(), \
                                                   'Effect' : hindList[iHind][4].get() }
     # Get Equipment in equipment tab
+    curChar.equip = {'Cash' : equipList[0].get()}
     
     # Get Wounds
     curChar.wounds = {};

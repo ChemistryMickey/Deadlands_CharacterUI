@@ -7,7 +7,7 @@ from config import attributeLabels, subAttributeLabels, maxEandD,\
 
 def load_character(charNameTuple, charClassTuple, attrDict, \
                        subAtrDict, woundDict, chipDict, \
-                       characterNotes, gameNotes, edgeList, hindList):
+                       characterNotes, gameNotes, edgeList, hindList, equipList):
     curCharFile = open_character_file();
     db_log( 'Successfully opened {} file!'.format( curCharFile ) );
     
@@ -16,7 +16,7 @@ def load_character(charNameTuple, charClassTuple, attrDict, \
     
     write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
                            subAtrDict, woundDict, chipDict, \
-                           characterNotes, gameNotes, edgeList, hindList );
+                           characterNotes, gameNotes, edgeList, hindList, equipList );
     db_log( 'Successfully wrote character data to GUI!' );
     
 def open_character_file():
@@ -35,7 +35,7 @@ def read_character_file( curCharFile ):
     
 def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
                            subAtrDict, woundDict, chipDict, \
-                           characterNotes, gameNotes, edgeList, hindList ):
+                           characterNotes, gameNotes, edgeList, hindList, equipList ):
     charNameTuple[1].set(curChar['name']);
     charClassTuple[1].set(curChar['charClass']);
     
@@ -60,22 +60,24 @@ def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
         chipDict[chipTypes[iChip]][1].set( curChips[chipNames[iChip]] );
     
     #Write Equipment
-    
+    curEquip = curChar['equip'];
+    equipList[0].set( curEquip['Cash'] );
     #Write AA
     
     #Write EandD
     curEandD = curChar['EandD'];
     curEandD_keys = list( curEandD.keys() );
     db_log( 'Current Edges and Hinderances: {}'.format( curEandD_keys ) );
-    for iEdge in range( maxEandD ):
-        edgeList[iEdge][0].set( curEandD_keys[iEdge] );
-        edgeList[iEdge][2].set( curEandD[curEandD_keys[iEdge]]['Value'] );
-        edgeList[iEdge][4].set( curEandD[curEandD_keys[iEdge]]['Effect'] );
-    
-    for iHind in range( maxEandD ):
-        hindList[iHind][0].set( curEandD_keys[iHind + maxEandD] );
-        hindList[iHind][2].set( curEandD[curEandD_keys[iHind + maxEandD]]['Value'] );
-        hindList[iHind][4].set( curEandD[curEandD_keys[iHind + maxEandD]]['Effect'] );
+    if( curEandD_keys[0] != '' ):
+        for iEdge in range( maxEandD ):
+            edgeList[iEdge][0].set( curEandD_keys[iEdge] );
+            edgeList[iEdge][2].set( curEandD[curEandD_keys[iEdge]]['Value'] );
+            edgeList[iEdge][4].set( curEandD[curEandD_keys[iEdge]]['Effect'] );
+        
+        for iHind in range( maxEandD ):
+            hindList[iHind][0].set( curEandD_keys[iHind + maxEandD] );
+            hindList[iHind][2].set( curEandD[curEandD_keys[iHind + maxEandD]]['Value'] );
+            hindList[iHind][4].set( curEandD[curEandD_keys[iHind + maxEandD]]['Effect'] );
         
     #Write Game Notes
     curLog = curChar['gameNotes'];

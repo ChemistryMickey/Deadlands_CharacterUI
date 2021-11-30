@@ -45,7 +45,7 @@ from generate_character_tab import generate_character_tab
 	
 # Create Equipment Tab
 from generate_equipment_tab import generate_equipment_tab
-generate_equipment_tab( equipmentTab );
+equipList = generate_equipment_tab( equipmentTab );
 
 # Create Arcane Abilities Tab
 # ~ if( DEBUG_LEVEL == DEBUG_LEVELS['Debug'] ):
@@ -81,14 +81,14 @@ curChar = create_new_character();
 from generate_menubar import generate_menubar
 menubar = generate_menubar( root, charNameTuple, charClassTuple, attrDict, \
                        subAtrDict, woundDict, chipDict, \
-                       characterNotes, gameNotes, edgeList, hindList );
+                       characterNotes, gameNotes, edgeList, hindList, equipList );
 
 
 #=========END GUI============
 root.bind( '<Control-s>', lambda event: save_character( charNameTuple, charClassTuple, attrDict, \
-                                                       subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList ) );
+                                                       subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList, equipList ) );
 root.bind( '<Control-l>', lambda event: load_character( charNameTuple, charClassTuple, attrDict, \
-                                                       subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList) );
+                                                       subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList, equipList) );
 root.bind( '<Control-q>', lambda event: root.destroy() );
 
 root.config( menu = menubar );

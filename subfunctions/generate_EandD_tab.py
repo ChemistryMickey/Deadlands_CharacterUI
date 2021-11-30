@@ -19,6 +19,8 @@ def generate_EandD_tab( edgesTab ):
     
     # Create Edge Matrix
     [edgeDict, uniqueEdges] = create_EandD_dict();
+    uniqueEdges.sort(); #this modifies the list itself
+    
     edgeSelections = [];
     edgePointSelections = [];
     edgeEffectText = [];
@@ -38,6 +40,8 @@ def generate_EandD_tab( edgesTab ):
     
     
     [hindDict, uniqueHind] = create_EandD_dict( tableLoc = './data/EandD/hinderances.csv', prop = 'Hinderance' );
+    uniqueHind.sort();
+    
     hindSelections = [];
     hindPointSelections = [];
     hindEffectText = [];
@@ -110,7 +114,7 @@ def update_labels( edgeList, edgeDict, hindList, hindDict ):
             else:
                 hindList[iHind][4].set( "Point value doesn't exist for that hinderance. Available point values: {}".format( hindDict[requestedHind]['values'] ) );
         else:
-            hindList[iHind][4].set( "Requested Hinderance not an option" );
+            hindList[iHind][4].set( "" );
             
     
 def create_EandD_dict( tableLoc = './data/EandD/edges.csv', prop = 'Edge' ):

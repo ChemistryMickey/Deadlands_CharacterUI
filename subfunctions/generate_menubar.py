@@ -8,7 +8,7 @@ from save_character import save_character
 
 def generate_menubar( root, charNameTuple, charClassTuple, attrDict, \
                        subAtrDict, woundDict, chipDict, \
-                       characterNotes, gameNotes, edgeList, hindList ):
+                       characterNotes, gameNotes, edgeList, hindList, equipList ):
 	db_log( 'Preparing Menubar' );
 
 	menubar = Menu( root );
