@@ -7,12 +7,7 @@
 	ToDo:
 		- Create Equipment Tab
 		- Create Arcane Abilities Tab
-		- Create Edges and Hindrances Tab
-		- Load / Save Character Function
 		- Export as .txt function
-	ChangeLog:
-		2021-11-23 (Mickey):
-			- Added chips and wounds to character tab (ch. tab complete?)
 """
 
 from tkinter import *
