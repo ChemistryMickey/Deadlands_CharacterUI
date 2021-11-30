@@ -15,12 +15,12 @@ def save_character( charNameTuple, charClassTuple, attrDict, subAtrDict, \
     charJSON = json.dumps( curChar.__dict__, indent = 4 );
     db_log( 'Saving... {}'.format( charJSON ) );
     #write JSON dictionary to file
-    filePath = './data/{}.dead'.format( curChar.name );
+    filePath = './data/characters/{}.dead'.format( curChar.name );
     if( exists( filePath ) ):
         overwriteOK = check_if_overwrite_ok();
     
     if( overwriteOK ):
-        f = open( './data/{}.dead'.format( curChar.name ), 'w' );
+        f = open( filePath, 'w' );
         f.write( charJSON );
         f.close();
         db_log( 'Saved!' );

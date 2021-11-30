@@ -22,7 +22,7 @@ def load_character(charNameTuple, charClassTuple, attrDict, \
 def open_character_file():
     # use UI getter to get character file
     filetypes = (('Deadlands Character File', '*.dead'), ('All Files', '*.*'));
-    filename = fd.askopenfilename( title = 'Open a Character', initialdir = './data', filetypes = filetypes );
+    filename = fd.askopenfilename( title = 'Open a Character', initialdir = './data/characters', filetypes = filetypes );
     
     return filename; 
     

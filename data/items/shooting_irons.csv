@@ -1,0 +1,41 @@
+Item,Class,Shots,Caliber,RoF,Damage,Range Increment,Price
+Gatling Gun,Automatics,45,0.36,3,3d8,20,1500
+Gatling Pistol,Automatics,12,0.44,3,3d6,10,800
+Sharps ‘55,Carbines,1,0.57 C&B,1,5d8,15,18
+Spencer,Carbines,7,0.56,1,4d8,15,15
+LeMat Carbine & Shotgun,Carbines,9,0.42,1,3d6,15,35
+LeMat Shotgun,Carbines,1,16-ga,1,Special,5,-
+Derringer,Derringers & Pepperboxes,2,0.44,2,3d6,5,8
+English 1840 Model,Derringers & Pepperboxes,8,0.36 C&B,1,2d6,5,5
+Rupertus Pepperbox,Derringers & Pepperboxes,8,0.22,1,2d4,5,6
+Wesson Dagger-Pistol,Derringers & Pepperboxes,2,0.41,1,2d6,5,6
+Colt Army,"Pistols, Single-Action",6,0.44,1,3d6,10,12
+Colt Buntline Special,"Pistols, Single-Action",6,0.45,1,3d6,10,Special
+Colt Dragoon,"Pistols, Single-Action",6,0.44,1,3d6,10,11
+Colt Navy,"Pistols, Single-Action",6,0.36 C&B,1,2d6,10,10
+Colt Peacemaker,"Pistols, Single-Action",6,0.45,1,3d6,10,15
+Knuckle-Duster,"Pistols, Single-Action",5,0.32,1,2d6,5,8
+LeMat Grapeshot Pistol & Shotgun,"Pistols, Single-Action",9,0.4,1,2d6,10,25
+LeMat Grapeshot Shotgun,"Pistols, Single-Action",1,16-ga,1,Special,5,-
+Colt Frontier,"Pistols, Double-Action",6,0.32-20,2,2d6,10,8
+Colt Lightning,"Pistols, Double-Action",6,0.38,2,2d6,10,13
+Colt DA Peacemaker,"Pistols, Double-Action",6,0.45,2,3d6,10,15
+Colt Thunderer,"Pistols, Double-Action",6,0.41,2,2d6,10,14
+Starr Revolver,"Pistols, Double-Action",6,0.44 C&B,2,3d6,10,9
+Ballard ‘72,Rifles,1,0.56 C&B,1,5d8,20,24
+Bullard Express,Rifles,11,0.5,1,4d10,20,30
+Colt-Paterson Model ‘36,Rifles,7,0.69 C&B,1,5d10,20,25
+Colt Revolving Rifle,Rifles,5,0.56 C&B,1,5d8,20,24
+Enfield Musket,Rifles,1,0.58 C&B,1,5d8,10,25
+Evans Old Model Sporter,Rifles,34,0.44 Evans,1,4d8,20,30
+Remington ‘71,Rifles,1,0.50-0.70,1,4d10,20,20
+Sharp’s Big 50,Rifles,1,0.50-0.70,1,4d10,20,20
+Springfield,Rifles,1,0.58 C&B,1,5d8,20,8
+Winchester ‘73,Rifles,15,0.44-40,1,4d8,20,25
+Winchester ‘76,Rifles,15,0.4,1,4d8+2,20,40
+Cold Revolving Shotgun,Shotguns,5,12-ga,1,Special,10,45
+Double Barrel,Shotguns,2,12-ga,2,Special,10,35
+Scattergun,Shotguns,2,12-ga,2,Special,5,35
+Single Barrel,Shotguns,1,12-ga,1,Special,10,25
+Winchester Lever Action,Shotguns,4,12-ga,1,Special,10,35
+Flamethrower,Other,30,-,1d6,1d10/shot,20,2000

@@ -37,7 +37,7 @@ def generate_EandD_tab( edgesTab ):
         edgeList[iEdge][5].grid( row = iEdge, column = 2, padx = 10, pady = 10 );    
     
     
-    [hindDict, uniqueHind] = create_EandD_dict( tableLoc = './data/hinderances.csv', prop = 'Hinderance' );
+    [hindDict, uniqueHind] = create_EandD_dict( tableLoc = './data/EandD/hinderances.csv', prop = 'Hinderance' );
     hindSelections = [];
     hindPointSelections = [];
     hindEffectText = [];
@@ -113,7 +113,7 @@ def update_labels( edgeList, edgeDict, hindList, hindDict ):
             hindList[iHind][4].set( "Requested Hinderance not an option" );
             
     
-def create_EandD_dict( tableLoc = './data/edges.csv', prop = 'Edge' ):
+def create_EandD_dict( tableLoc = './data/EandD/edges.csv', prop = 'Edge' ):
     EandDTable = read_csv( tableLoc );
     db_log( 'Read {} list: {}'.format( prop, EandDTable.head() ) );
     
