@@ -46,7 +46,7 @@ def draw_cards( numCards ):
 		for face in faceList:
 			extendedDeck.append( (face, suit) );
 	
-	extendedDeck.extend( [('Joker', 's'), ('Joker', 'h'), ('Joker', 'd'), ('Joker', 'c')] );
+	extendedDeck.extend( [('Joker', 'b'), ('Joker', 'r')] );
 	db_log( 'Extended Deck with Jokers: {}'.format( extendedDeck ) );
 
 	# Draw a random number of cards from the list
