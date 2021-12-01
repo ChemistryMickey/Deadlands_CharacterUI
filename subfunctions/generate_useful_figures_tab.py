@@ -12,6 +12,7 @@ from MDCG_log import db_log
 
 def generate_useful_figures( figuresTab, figureLoc = './data/figures' ):
     figures = listdir( figureLoc );
+    figures.sort();
     images = [];
     imageLabels = [];
     curRow = 0;
