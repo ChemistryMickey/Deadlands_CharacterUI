@@ -7,9 +7,11 @@
 	ToDo:
 		- Create Equipment Tab
 		- Create Arcane Abilities Tab
+        - Create character creation widget
+        - Create encounter tracker
 		- Export as .txt function
-        - Track exploding dice such that
-        - Create "helpful figures" tab
+        - Track exploding dice such that the highest sum is taken
+        
 """
 
 from tkinter import *

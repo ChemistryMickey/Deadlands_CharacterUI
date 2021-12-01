@@ -1,8 +1,14 @@
 from tkinter import *
 from tkinter import ttk
 from MDCG_log import db_log
+from copy import deepcopy
 
 import pandas as pd
+from config import attributeLabels, subAttributeLabels, horseTypes
+
+maxRows = 10;
+maxCols = 14;
+
 
 def generate_equipment_tab( equipmentTab ):
     db_log( 'Preparing Equipment Tab Layout' );
@@ -28,8 +34,9 @@ def generate_equipment_tab( equipmentTab ):
     cashEntry.grid( row = 0, column = 0 );
     Label( moneyFrame, text = '$' ).grid( row = 0, column = 1 );
     
+    # Create Standard Horse with dropdown for modifiers
     steedFrame.grid( row = 2, column = 0, columnspan = 2, padx = 10, pady = 10 );
-    Label( steedFrame, text = 'Placeholder' ).pack();
+    steedList = generate_steed_list( steedFrame );
     
     invFrame.grid( row = 3, column = 0, columnspan = 2, padx = 10, pady = 10 );
     Label( invFrame, text = 'Placeholder' ).pack();
@@ -39,3 +46,63 @@ def generate_equipment_tab( equipmentTab ):
     db_log( 'Created Equipment Tab Layout' );
     
     return [cashVar];
+
+def generate_steed_list( steedFrame ):
+    Label( steedFrame, text = 'Name: ' ).grid( row = 0, column = 0, padx = 5, pady = 5 );
+    Label( steedFrame, text = 'Bent: ' ).grid( row = 0, column = 3, padx = 5, pady = 5 );
+    nameVar = StringVar();
+    specialVar = StringVar();
+    steedList = [nameVar, Entry( steedFrame, textvariable = nameVar, width = 30, borderwidth = 5 ), \
+                 specialVar, OptionMenu( steedFrame, specialVar, *horseTypes )];
+    
+    steedList[1].grid( row = 0, column = 1, columnspan = 2, padx = 10, pady = 10 );
+    steedList[2].set( horseTypes[0] );
+    steedList[3].grid( row = 0, column = 4, columnspan = 2, padx = 5, pady = 5 );
+
+    
+    attrDict = {};
+    curRow = 1;
+    curCol = -2;
+    attrStrs = [];
+    for iCol in range( len( attributeLabels ) ):
+        curCol += 2;
+        if( curCol == maxCols ):
+            curCol = 0;
+            curRow += 1;
+            
+        attrStrs.append( StringVar() );
+        attrDict[attributeLabels[iCol]] = (Label( steedFrame, text = attributeLabels[iCol], font = ('Helvatica', 8) ) ), attrStrs[iCol], \
+                Entry( steedFrame, textvariable = attrStrs[iCol], \
+                                    width = 10, borderwidth = 3, font = ('Helvatica', 5) ) ;
+        attrDict[attributeLabels[iCol]][0].grid( row = curRow, column = curCol, padx = 10, pady = 10 );
+        attrDict[attributeLabels[iCol]][2].grid( row = curRow, column = curCol + 1, padx = 10, pady = 10 );
+
+    steedList.extend( attrDict );
+    
+    #46 subatributes
+    curCol = 0;
+    curRowIter = deepcopy( curRow );
+    #curRow = 0;
+    subAttrStrs = [];
+    subAtrDict = {};
+    for iSubAtr in range( len( subAttributeLabels ) ):
+        curRowIter += 1;
+        
+        subAttrStrs.append( StringVar() );
+        subAtrDict[subAttributeLabels[iSubAtr]] = (Label( steedFrame, text = subAttributeLabels[iSubAtr], font = ('Helvatica', 5) ), subAttrStrs[iSubAtr], \
+                                                     Entry( steedFrame, textvariable = subAttrStrs[iSubAtr], width = 5, borderwidth = 3, font = ('Helvatica', 5) ));
+        subAtrDict[subAttributeLabels[iSubAtr]][0].grid( row = curRowIter, column = curCol, padx = 10, pady = 10 );
+        subAtrDict[subAttributeLabels[iSubAtr]][2].grid( row = curRowIter, column = curCol + 1, padx = 10, pady = 10 );
+        
+        if( curRowIter == maxRows ):
+            curRowIter = deepcopy( curRow );
+            curCol += 2;
+    subAttrStrs.append( StringVar() );
+    subAtrDict['Terror'] = (Label( steedFrame, text = 'Terror', font = ('Helvetica', 5 ) ), subAttrStrs[-1], \
+                              Entry( steedFrame, textvariable = subAttrStrs[-1], width = 5, borderwidth = 3, font = ('Helvetica', 5 ) ));
+    subAtrDict['Terror'][0].grid( row = curRowIter + 1, column = curCol, padx = 10, pady = 10 );
+    subAtrDict['Terror'][2].grid( row = curRowIter + 1, column = curCol + 1, padx = 10, pady = 10 );         
+    
+    steedList.extend( subAtrDict );
+        
+    return steedList;

@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from MDCG_log import db_log
 
-from config import woundLevels, bodyPartLabels, bodyPartAbbr, chipNames, chipTypes
+from config import attributeLabels, subAttributeLabels, woundLevels, bodyPartLabels, bodyPartAbbr, chipNames, chipTypes
 
 def generate_character_tab( characterTab ):
     db_log( 'Preparing Character Tab' );
@@ -36,7 +36,6 @@ def generate_character_tab( characterTab ):
     maxCols = 14;
     
     # Going with a dictionary with 'attr' : ('attribute', Label, Entry)
-    from config import attributeLabels
     attrDict = {};
     curRow = 0;
     curCol = -2;
@@ -54,7 +53,6 @@ def generate_character_tab( characterTab ):
         attrDict[attributeLabels[iCol]][2].grid( row = curRow, column = curCol + 1, padx = 10, pady = 10 );
 
     #46 subatributes
-    from config import subAttributeLabels
     curCol = 0;
     curRow = 0;
     subAttrStrs = [];
