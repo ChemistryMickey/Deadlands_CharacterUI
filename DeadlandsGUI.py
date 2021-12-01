@@ -79,6 +79,10 @@ generate_RNG_tab( RNGTab );
 from create_new_character import create_new_character
 curChar = create_new_character();
 
+# Place useful figures
+from generate_useful_figures_tab import generate_useful_figures
+[images, imageLabels] = generate_useful_figures( figuresTab );
+
 # Create Menubar
 from generate_menubar import generate_menubar
 menubar = generate_menubar( root, charNameTuple, charClassTuple, attrDict, \
