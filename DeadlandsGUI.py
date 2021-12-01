@@ -8,6 +8,8 @@
 		- Create Equipment Tab
 		- Create Arcane Abilities Tab
 		- Export as .txt function
+        - Track exploding dice such that
+        - Create "helpful figures" tab
 """
 
 from tkinter import *
@@ -35,7 +37,7 @@ root.geometry('1500x800');
 # Create Tab Layout
 from generate_tabs import generate_tabs
 [tabParent, characterTab, equipmentTab, characterNotesTab, \
-				arcaneAbilitiesTab, edgesTab, gameNotesTab, RNGTab] = generate_tabs( root );
+				arcaneAbilitiesTab, edgesTab, gameNotesTab, RNGTab, figuresTab] = generate_tabs( root );
 
 # Create Character Tab
 from generate_character_tab import generate_character_tab
