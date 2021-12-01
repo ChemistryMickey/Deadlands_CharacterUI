@@ -39,7 +39,7 @@ def display_dice( diceList, stringVar, sumVar, maxVar ):
 
 def draw_cards( numCards ):
 	suitList = ['s', 'h', 'd', 'c'];
-	faceList = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+	faceList = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 	
 	extendedDeck = [];
 	for suit in suitList:
