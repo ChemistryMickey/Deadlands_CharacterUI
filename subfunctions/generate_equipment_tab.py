@@ -4,7 +4,7 @@ from MDCG_log import db_log
 from copy import deepcopy
 
 import pandas as pd
-from config import attributeLabels, subAttributeLabels, horseTypes
+from config import attrAbr, horseTypes, horseSkills
 
 maxRows = 10;
 maxCols = 14;
@@ -64,44 +64,40 @@ def generate_steed_list( steedFrame ):
     curRow = 1;
     curCol = -2;
     attrStrs = [];
-    for iCol in range( len( attributeLabels ) ):
+    for iCol in range( len( attrAbr ) ):
         curCol += 2;
         if( curCol == maxCols ):
             curCol = 0;
             curRow += 1;
             
         attrStrs.append( StringVar() );
-        attrDict[attributeLabels[iCol]] = (Label( steedFrame, text = attributeLabels[iCol], font = ('Helvatica', 8) ) ), attrStrs[iCol], \
+        attrDict[attrAbr[iCol]] = (Label( steedFrame, text = attrAbr[iCol], font = ('Helvatica', 8) ) ), attrStrs[iCol], \
                 Entry( steedFrame, textvariable = attrStrs[iCol], \
-                                    width = 10, borderwidth = 3, font = ('Helvatica', 5) ) ;
-        attrDict[attributeLabels[iCol]][0].grid( row = curRow, column = curCol, padx = 10, pady = 10 );
-        attrDict[attributeLabels[iCol]][2].grid( row = curRow, column = curCol + 1, padx = 10, pady = 10 );
+                                    width = 10, borderwidth = 3, font = ('Helvatica', 8) ) ;
+        attrDict[attrAbr[iCol]][0].grid( row = curRow, column = curCol, padx = 10, pady = 10 );
+        attrDict[attrAbr[iCol]][2].grid( row = curRow, column = curCol + 1, padx = 10, pady = 10 );
 
     steedList.extend( attrDict );
     
     #46 subatributes
-    curCol = 0;
-    curRowIter = deepcopy( curRow );
+    curCol = -2;
     #curRow = 0;
     subAttrStrs = [];
     subAtrDict = {};
-    for iSubAtr in range( len( subAttributeLabels ) ):
-        curRowIter += 1;
+    for iSubAtr in range( len( horseSkills ) ):
+        curCol += 2;
         
         subAttrStrs.append( StringVar() );
-        subAtrDict[subAttributeLabels[iSubAtr]] = (Label( steedFrame, text = subAttributeLabels[iSubAtr], font = ('Helvatica', 5) ), subAttrStrs[iSubAtr], \
-                                                     Entry( steedFrame, textvariable = subAttrStrs[iSubAtr], width = 5, borderwidth = 3, font = ('Helvatica', 5) ));
-        subAtrDict[subAttributeLabels[iSubAtr]][0].grid( row = curRowIter, column = curCol, padx = 10, pady = 10 );
-        subAtrDict[subAttributeLabels[iSubAtr]][2].grid( row = curRowIter, column = curCol + 1, padx = 10, pady = 10 );
+        subAtrDict[horseSkills[iSubAtr]] = (Label( steedFrame, text = horseSkills[iSubAtr], font = ('Helvatica', 8) ), subAttrStrs[iSubAtr], \
+                                                     Entry( steedFrame, textvariable = subAttrStrs[iSubAtr], width = 5, borderwidth = 3, font = ('Helvatica', 8) ));
+        subAtrDict[horseSkills[iSubAtr]][0].grid( row = 3, column = curCol, padx = 10, pady = 10 );
+        subAtrDict[horseSkills[iSubAtr]][2].grid( row = 3, column = curCol + 1, padx = 10, pady = 10 );
         
-        if( curRowIter == maxRows ):
-            curRowIter = deepcopy( curRow );
-            curCol += 2;
     subAttrStrs.append( StringVar() );
-    subAtrDict['Terror'] = (Label( steedFrame, text = 'Terror', font = ('Helvetica', 5 ) ), subAttrStrs[-1], \
-                              Entry( steedFrame, textvariable = subAttrStrs[-1], width = 5, borderwidth = 3, font = ('Helvetica', 5 ) ));
-    subAtrDict['Terror'][0].grid( row = curRowIter + 1, column = curCol, padx = 10, pady = 10 );
-    subAtrDict['Terror'][2].grid( row = curRowIter + 1, column = curCol + 1, padx = 10, pady = 10 );         
+    subAtrDict['Terror'] = (Label( steedFrame, text = 'Terror', font = ('Helvetica', 8 ) ), subAttrStrs[-1], \
+                              Entry( steedFrame, textvariable = subAttrStrs[-1], width = 5, borderwidth = 3, font = ('Helvetica', 8 ) ));
+    subAtrDict['Terror'][0].grid( row = 3, column = curCol + 2, padx = 10, pady = 10 );
+    subAtrDict['Terror'][2].grid( row = 3, column = curCol + 3, padx = 10, pady = 10 );         
     
     steedList.extend( subAtrDict );
         

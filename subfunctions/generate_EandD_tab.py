@@ -10,6 +10,7 @@ entryWidth = 150;
 wrapLength = 1000;
 
 def generate_EandD_tab( edgesTab ):
+
     # Create Label Frames
     edgeFrame = LabelFrame( edgesTab, text = 'Edges', width = 385, height = 460, relief = 'raised', borderwidth = 5 );
     hinderFrame = LabelFrame( edgesTab, text = 'Hinderances', width = 385, height = 460, relief = 'raised', borderwidth = 5 );
@@ -21,19 +22,22 @@ def generate_EandD_tab( edgesTab ):
     [edgeDict, uniqueEdges] = create_EandD_dict();
     uniqueEdges.sort(); #this modifies the list itself
     
+    edgeList = [];
     edgeSelections = [];
     edgePointSelections = [];
     edgeEffectText = [];
     pointVal = range( 6 );
-    edgeList = [];
     for iEdge in range( maxEandD ):
         edgeSelections.append( StringVar() );
         edgePointSelections.append( StringVar() );
         edgeEffectText.append( StringVar() );
-        edgeList.append( [edgeSelections[iEdge], OptionMenu( edgeFrame, edgeSelections[iEdge], *uniqueEdges ), \
-                             edgePointSelections[iEdge], OptionMenu( edgeFrame, edgePointSelections[iEdge], *pointVal ), \
-                             edgeEffectText[iEdge],\
-                             Label( edgeFrame, textvariable = edgeEffectText[iEdge], width = entryWidth, font = "helvetica 10", wraplength = wrapLength )] );
+        edgeList.append( [edgeSelections[iEdge], \
+                          OptionMenu( edgeFrame, edgeSelections[iEdge], *uniqueEdges ), \
+                          edgePointSelections[iEdge], \
+                          OptionMenu( edgeFrame, edgePointSelections[iEdge], *pointVal ), \
+                          edgeEffectText[iEdge],\
+                          Label( edgeFrame, textvariable = edgeEffectText[iEdge], width = entryWidth, font = "helvetica 10", wraplength = wrapLength )] );
+        db_log( 'Option Menu {}: {}'.format( iEdge, dir( edgeList[iEdge][1]._w ) ) );
         edgeList[iEdge][1].grid( row = iEdge, column = 0, padx = 10, pady = 10 );
         edgeList[iEdge][3].grid( row = iEdge, column = 1, padx = 10, pady = 10 );
         edgeList[iEdge][5].grid( row = iEdge, column = 2, padx = 10, pady = 10 );    
@@ -45,16 +49,19 @@ def generate_EandD_tab( edgesTab ):
     hindSelections = [];
     hindPointSelections = [];
     hindEffectText = [];
-    pointVal = range( 6 );
     hindList = [];
+    pointVal = range( 6 );
     for iHind in range( maxEandD ):
         hindSelections.append( StringVar() );
         hindPointSelections.append( StringVar() );
         hindEffectText.append( StringVar() );
-        hindList.append( [hindSelections[iHind], OptionMenu( hinderFrame, hindSelections[iHind], *uniqueHind ), \
-                             hindPointSelections[iHind], OptionMenu( hinderFrame, hindPointSelections[iHind], *pointVal ), \
-                             hindEffectText[iHind], \
-                             Label( hinderFrame, textvariable = hindEffectText[iHind], width = entryWidth, font = "helvetica 10", wraplength = wrapLength )] );
+        hindList.append( [hindSelections[iHind], \
+                          OptionMenu( hinderFrame, hindSelections[iHind], *uniqueHind ), \
+                          hindPointSelections[iHind], \
+                          OptionMenu( hinderFrame, hindPointSelections[iHind], *pointVal ), \
+                          hindEffectText[iHind], \
+                          Label( hinderFrame, textvariable = hindEffectText[iHind], \
+                                 width = entryWidth, font = "helvetica 10", wraplength = wrapLength )] );
         hindList[iHind][1].grid( row = iHind, column = 0, padx = 10, pady = 10 );
         hindList[iHind][3].grid( row = iHind, column = 1, padx = 10, pady = 10 );
         hindList[iHind][5].grid( row = iHind, column = 2, padx = 10, pady = 10 );    
@@ -65,56 +72,93 @@ def generate_EandD_tab( edgesTab ):
                           command = lambda: update_labels( edgeList, edgeDict, hindList, hindDict ) );
     updateButton.grid( row = 2, column = 0, padx = 10, pady = 10 );
     return [edgeList, hindList];
+
+def update_edge_label( edgeList, edgeDict ):
+    db_log( 'Requested Edge List: {}'.format( edgeList ) );
+
+#    db_log( 'Edge Choice: {}'.format( choice ) );
+#    
+#    # Find index of row for that requested edge
+#    requestedEdgeList = [];
+#    for iEdge in range( len( edgeList ) ):
+#        requestedEdgeList.append( edgeList[iEdge][0].get() );
+#    db_log( 'Full Edge List: {}'.format( requestedEdgeList ) );
+#    updateRowInd = requestedEdgeList.index( choice )
+#    db_log( 'Row Index: {}'.format( updateRowInd ) );
+#    
+#    # Get that edge info from the dictionary
+#    requestEdgeEntry = edgeDict[str(choice)];
+#    db_log( 'Request Update Edge: {}'.format( requestEdgeEntry ) );
+#    
+#    # If the point choice is empty, set it to the first available option
+#    requestedPoint = edgeList[updateRowInd][2].get()
+#    if( requestedPoint == '' ):
+#        requestedPoint = requestEdgeEntry['values'][0];
+#        edgeList[updateRowInd][2].set( requestEdgeEntry['values'][requestedPoint] );
+#    else:
+#        requestedPoint = int( requestedPoint );
     
-def update_labels( edgeList, edgeDict, hindList, hindDict ):
-    for iEdge in range( maxEandD ):
-        #Check that the edge isn't empty
-        requestedEdge = edgeList[iEdge][0].get()
-        db_log( 'Requested Edge: {}'.format( requestedEdge ) );
-        if( requestedEdge != '' ):
-            #Check that the point value exists in the dictionary
-            requestedPoint = edgeList[iEdge][2].get();
-            if( requestedPoint != '' ):
-                requestedPoint = int( requestedPoint );
+    return True;
+
+def update_edge_label_point( choice ):
+    
+    db_log( 'Point Choice: {}'.format( choice ) );
+    
+    
+def update_labels( edgeList = [], edgeDict = {}, hindList = [], hindDict = {} ):
+    db_log( 'Edge List: {}, Hinderance List: {}'.format( edgeList, hindList ) )
+    if( edgeList != [] ):
+        for iEdge in range( maxEandD ):
+            #Check that the edge isn't empty
+            requestedEdge = edgeList[iEdge][0].get()
+            db_log( 'Requested Edge: {}'.format( requestedEdge ) );
+            if( requestedEdge != '' ):
+                #Check that the point value exists in the dictionary
+                requestedPoint = edgeList[iEdge][2].get();
+                if( requestedPoint != '' ):
+                    requestedPoint = int( requestedPoint );
+                else:
+                    requestedPoint = 0;
+                    
+                pointValExists = requestedPoint in edgeDict[requestedEdge]['values'];
+                if( pointValExists ):
+                    #Get the index of that requested point value
+                    dictInd = edgeDict[requestedEdge]['values'].index( requestedPoint );
+                    
+                    #Set the label to be that index
+                    edgeList[iEdge][4].set( edgeDict[requestedEdge]['effect'][dictInd] );
+                else:
+                    edgeList[iEdge][4].set( "Point value doesn't exist for that edge. Available point values: {}".format( edgeDict[requestedEdge]['values'] ) );
             else:
-                requestedPoint = 0;
-                
-            pointValExists = requestedPoint in edgeDict[requestedEdge]['values'];
-            if( pointValExists ):
-                #Get the index of that requested point value
-                dictInd = edgeDict[requestedEdge]['values'].index( requestedPoint );
-                
-                #Set the label to be that index
-                edgeList[iEdge][4].set( edgeDict[requestedEdge]['effect'][dictInd] );
-            else:
-                edgeList[iEdge][4].set( "Point value doesn't exist for that edge. Available point values: {}".format( edgeDict[requestedEdge]['values'] ) );
-        else:
-            edgeList[iEdge][4].set( "Requested Edge not an option" );
+                edgeList[iEdge][4].set( "Requested Edge not an option" );
             
     #Hinderances
-    for iHind in range( maxEandD ):
-        #Check that the edge isn't empty
-        requestedHind = hindList[iHind][0].get()
-        db_log( 'Requested Hinderance: {}'.format( requestedHind ) );
-        if( requestedHind != '' ):
-            #Check that the point value exists in the dictionary
-            requestedPoint = hindList[iHind][2].get();
-            if( requestedPoint != '' ):
-                requestedPoint = int( requestedPoint );
+    if( hindList != [] ):
+        for iHind in range( maxEandD ):
+            #Check that the edge isn't empty
+            requestedHind = hindList[iHind][0].get()
+            db_log( 'Requested Hinderance: {}'.format( requestedHind ) );
+            if( requestedHind != '' ):
+                #Check that the point value exists in the dictionary
+                requestedPoint = hindList[iHind][2].get();
+                if( requestedPoint != '' ):
+                    requestedPoint = int( requestedPoint );
+                else:
+                    requestedPoint = 0;
+                    
+                pointValExists = requestedPoint in hindDict[requestedHind]['values'];
+                if( pointValExists ):
+                    #Get the index of that requested point value
+                    dictInd = hindDict[requestedHind]['values'].index( requestedPoint );
+                    
+                    #Set the label to be that index
+                    hindList[iHind][4].set( hindDict[requestedHind]['effect'][dictInd] );
+                else:
+                    hindList[iHind][4].set( "Point value doesn't exist for that hinderance. Available point values: {}".format( hindDict[requestedHind]['values'] ) );
             else:
-                requestedPoint = 0;
+                hindList[iHind][4].set( "" );
                 
-            pointValExists = requestedPoint in hindDict[requestedHind]['values'];
-            if( pointValExists ):
-                #Get the index of that requested point value
-                dictInd = hindDict[requestedHind]['values'].index( requestedPoint );
-                
-                #Set the label to be that index
-                hindList[iHind][4].set( hindDict[requestedHind]['effect'][dictInd] );
-            else:
-                hindList[iHind][4].set( "Point value doesn't exist for that hinderance. Available point values: {}".format( hindDict[requestedHind]['values'] ) );
-        else:
-            hindList[iHind][4].set( "" );
+    return True;
             
     
 def create_EandD_dict( tableLoc = './data/EandD/edges.csv', prop = 'Edge' ):

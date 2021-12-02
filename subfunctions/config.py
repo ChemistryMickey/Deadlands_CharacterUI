@@ -3,7 +3,7 @@ DEBUG_LEVELS = {'Error' : 0, 'Log' : 1, 'Debug' : 2}
 DEBUG_LEVEL = DEBUG_LEVELS['Debug'];
 
 
-attrAbr = ['cog', 'deft', 'know', 'mien', 'nimb', 'quick', 'smarts', 'spirit', 'str', 'vigor', 'pace', 'size', 'wind', 'grit'];
+attrAbr = ['C', 'D', 'K', 'M', 'N', 'Q', 'Sm', 'Sp', 'STR', 'V', 'Pace', 'Size', 'Wind', 'Grit'];
 attributeLabels = ["Cognition", "Deftness", "Knowledge", "Mien", "Nimbleness", "Quickness", \
 					"Smarts", "Spirit", "Strength", "Vigor", "Pace", "Size", "Wind", "Grit"];
 					
@@ -27,6 +27,7 @@ bodyPartLabels = ['Head', 'R. Arm', 'L. Arm', 'Guts', 'R. Leg', 'L. Leg'];
 bodyPartAbbr = ['head', 'rarm', 'larm', 'guts', 'rleg', 'lleg'];
 chipNames = ['White Chips', 'Red Chips', 'Blue Chips', 'Green Chips'];
 chipTypes = ['white', 'red', 'blue', 'green'];
-horseTypes = ['Ordinary', 'Brave', 'Fast', 'Smart', 'Strong', 'Surly', 'Tough']
+horseTypes = ['Ordinary', 'Brave', 'Fast', 'Smart', 'Strong', 'Surly', 'Tough'];
+horseSkills = [val for i, val in enumerate( subAttributeLabels ) if i in [31, 34, 24] ];
 
 maxEandD = 5; #maximum number of edges and hinderances allowed. Determined by Marshal
