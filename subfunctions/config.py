@@ -28,6 +28,12 @@ bodyPartAbbr = ['head', 'rarm', 'larm', 'guts', 'rleg', 'lleg'];
 chipNames = ['White Chips', 'Red Chips', 'Blue Chips', 'Green Chips'];
 chipTypes = ['white', 'red', 'blue', 'green'];
 horseTypes = ['Ordinary', 'Brave', 'Fast', 'Smart', 'Strong', 'Surly', 'Tough'];
-horseSkills = [val for i, val in enumerate( subAttributeLabels ) if i in [31, 34, 24] ];
+horseSkills = [val for i, val in enumerate( subAttributeLabels ) if i in [31, 34, 24, 45] ];
+standardHorse = {
+            'C' : '2d6', 'D' : '1d4', 'N' : '2d12', 'STR' : '2d10', 'Q' : '1d8', 'V' : '2d10', 
+            "Fightin' (Nimb)" : '1d12', "Swimmin' (Nimb)" : '4d12', 'K' : '1d6', 'M' : '1d6', 
+            'Sm' : '1d6', 'Sp' : '1d4', 'Guts (Spirit)' : '2d4', 'Overawe (Mien)' : '1d6', 'Terror' : '0',
+            'Pace' : '20', 'Size' : '10', 'Wind' : '14/14'
+        };
 
 maxEandD = 5; #maximum number of edges and hinderances allowed. Determined by Marshal

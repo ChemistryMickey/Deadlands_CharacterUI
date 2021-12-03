@@ -96,6 +96,7 @@ def update_points( ind, ehList, ehDict, *args ):
     for choice in pointRange:
         ehList[ind][3]['menu'].add_command( label = choice, command = _setit( ehList[ind][2], choice ) );
     
+    ehList[ind][2].set(pointRange[0]); #reset counter so user knows to set new point value
     return True; #oh my stars this works.
 
 def update_label( ind, ehList, ehDict, *args ):
