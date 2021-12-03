@@ -1,16 +1,17 @@
 from tkinter import *
+from tkinter import _setit
 from config import maxEandD
 from MDCG_log import db_log
 
 from pandas import read_csv 
 from numpy import zeros
 from copy import deepcopy #so we can reuse lists
+from functools import partial
 
 entryWidth = 150;
 wrapLength = 1000;
 
 def generate_EandD_tab( edgesTab ):
-
     # Create Label Frames
     edgeFrame = LabelFrame( edgesTab, text = 'Edges', width = 385, height = 460, relief = 'raised', borderwidth = 5 );
     hinderFrame = LabelFrame( edgesTab, text = 'Hinderances', width = 385, height = 460, relief = 'raised', borderwidth = 5 );
@@ -26,7 +27,7 @@ def generate_EandD_tab( edgesTab ):
     edgeSelections = [];
     edgePointSelections = [];
     edgeEffectText = [];
-    pointVal = range( 6 );
+    pointVals = range(6);
     for iEdge in range( maxEandD ):
         edgeSelections.append( StringVar() );
         edgePointSelections.append( StringVar() );
@@ -34,10 +35,12 @@ def generate_EandD_tab( edgesTab ):
         edgeList.append( [edgeSelections[iEdge], \
                           OptionMenu( edgeFrame, edgeSelections[iEdge], *uniqueEdges ), \
                           edgePointSelections[iEdge], \
-                          OptionMenu( edgeFrame, edgePointSelections[iEdge], *pointVal ), \
+                          OptionMenu( edgeFrame, edgePointSelections[iEdge], *pointVals ), \
                           edgeEffectText[iEdge],\
                           Label( edgeFrame, textvariable = edgeEffectText[iEdge], width = entryWidth, font = "helvetica 10", wraplength = wrapLength )] );
-        db_log( 'Option Menu {}: {}'.format( iEdge, dir( edgeList[iEdge][1]._w ) ) );
+        
+        edgeList[iEdge][0].trace("w", partial( update_points, iEdge, edgeList, edgeDict ));    
+        edgeList[iEdge][2].trace("w", partial( update_label, iEdge, edgeList, edgeDict ) );
         edgeList[iEdge][1].grid( row = iEdge, column = 0, padx = 10, pady = 10 );
         edgeList[iEdge][3].grid( row = iEdge, column = 1, padx = 10, pady = 10 );
         edgeList[iEdge][5].grid( row = iEdge, column = 2, padx = 10, pady = 10 );    
@@ -62,47 +65,52 @@ def generate_EandD_tab( edgesTab ):
                           hindEffectText[iHind], \
                           Label( hinderFrame, textvariable = hindEffectText[iHind], \
                                  width = entryWidth, font = "helvetica 10", wraplength = wrapLength )] );
+    
+        hindList[iHind][0].trace("w", partial( update_points, iHind, hindList, hindDict ));    
+        hindList[iHind][2].trace("w", partial( update_label, iHind, hindList, hindDict ) );
         hindList[iHind][1].grid( row = iHind, column = 0, padx = 10, pady = 10 );
         hindList[iHind][3].grid( row = iHind, column = 1, padx = 10, pady = 10 );
         hindList[iHind][5].grid( row = iHind, column = 2, padx = 10, pady = 10 );    
 
 
     #Add a button to update labels
-    updateButton = Button( edgesTab, text = 'Update Labels', height = 2, width = 10,\
-                          command = lambda: update_labels( edgeList, edgeDict, hindList, hindDict ) );
-    updateButton.grid( row = 2, column = 0, padx = 10, pady = 10 );
+#    updateButton = Button( edgesTab, text = 'Update Labels', height = 2, width = 10,\
+#                          command = lambda: update_labels( edgeList, edgeDict, hindList, hindDict ) );
+#    updateButton.grid( row = 2, column = 0, padx = 10, pady = 10 );
+    #Update button obsolete after trace variables implemented
+        
+
     return [edgeList, hindList];
 
-def update_edge_label( edgeList, edgeDict ):
-    db_log( 'Requested Edge List: {}'.format( edgeList ) );
-
-#    db_log( 'Edge Choice: {}'.format( choice ) );
-#    
-#    # Find index of row for that requested edge
-#    requestedEdgeList = [];
-#    for iEdge in range( len( edgeList ) ):
-#        requestedEdgeList.append( edgeList[iEdge][0].get() );
-#    db_log( 'Full Edge List: {}'.format( requestedEdgeList ) );
-#    updateRowInd = requestedEdgeList.index( choice )
-#    db_log( 'Row Index: {}'.format( updateRowInd ) );
-#    
-#    # Get that edge info from the dictionary
-#    requestEdgeEntry = edgeDict[str(choice)];
-#    db_log( 'Request Update Edge: {}'.format( requestEdgeEntry ) );
-#    
-#    # If the point choice is empty, set it to the first available option
-#    requestedPoint = edgeList[updateRowInd][2].get()
-#    if( requestedPoint == '' ):
-#        requestedPoint = requestEdgeEntry['values'][0];
-#        edgeList[updateRowInd][2].set( requestEdgeEntry['values'][requestedPoint] );
-#    else:
-#        requestedPoint = int( requestedPoint );
+def update_points( ind, ehList, ehDict, *args ):
+    db_log( 'Callback Var {} = {}'.format( ind, ehList[ind][0].get() ) );
     
-    return True;
-
-def update_edge_label_point( choice ):
+    # Get point range for that edge
+    pointRange = ehDict[ehList[ind][0].get()]['values'];
+    db_log( 'Allowed point range for {}: {}'.format( ehList[ind][0].get(), pointRange ) );
     
-    db_log( 'Point Choice: {}'.format( choice ) );
+    # Delete old options
+    ehList[ind][3]['menu'].delete(0, 'end');
+    
+    # Append new options
+    for choice in pointRange:
+        ehList[ind][3]['menu'].add_command( label = choice, command = _setit( ehList[ind][2], choice ) );
+    
+    return True; #oh my stars this works.
+
+def update_label( ind, ehList, ehDict, *args ):
+    db_log( 'Callback Var {} = {}'.format( ind, ehList[ind][0].get() ) );
+    
+    # Get label for that edge and point value
+    pointInd = ehDict[ehList[ind][0].get()]['values'].index( int(ehList[ind][2].get()) );
+    db_log( 'Requested point index and value: {}, {}'.format( pointInd, int(ehList[ind][2].get()) ) );
+    updateLabel = ehDict[ehList[ind][0].get()]['effect'][pointInd];
+    db_log( 'Requested label for {} at {} points: {}'.format( ehList[ind][0].get(), int(ehList[ind][2].get()), updateLabel ) );
+    
+    ehList[ind][4].set(updateLabel);
+    
+    return True; 
+
     
     
 def update_labels( edgeList = [], edgeDict = {}, hindList = [], hindDict = {} ):
@@ -169,7 +177,7 @@ def create_EandD_dict( tableLoc = './data/EandD/edges.csv', prop = 'Edge' ):
     EandDList = EandDTable[prop].values.tolist();
     uniqueEandD = unique( EandDList );
     uniqueEandD = uniqueEandD[0]; #just the list, not the list and counts
-    db_log( 'Unique {}: {}'.format( prop, uniqueEandD ) );
+    #db_log( 'Unique {}: {}'.format( prop, uniqueEandD ) );
     
     # For each unique edge, go through the table and find the values and description of each instance
     EandDdict = {};
@@ -185,7 +193,7 @@ def create_EandD_dict( tableLoc = './data/EandD/edges.csv', prop = 'Edge' ):
         
         EandDdict[curEandD] = { 'values' : deepcopy( valueList ), 'effect' : deepcopy( descriptionList ) };
     
-    db_log( 'Created {} dict: {}'.format( prop, EandDdict ) );
+    #db_log( 'Created {} dict: {}'.format( prop, EandDdict ) );
     return [EandDdict, uniqueEandD];
     
 def unique( listIn ):
