@@ -39,7 +39,6 @@ def generate_equipment_tab( equipmentTab ):
     steedFrame.grid( row = 2, column = 0, columnspan = 2, padx = 10, pady = 10 );
     steedList = generate_steed_list( steedFrame );
     steedList[2].trace("w", partial(update_steed_stats, steedList));
-    steedList[2].set( horseTypes[0] ); #Set to standard horse
     
     invFrame.grid( row = 3, column = 0, columnspan = 2, padx = 10, pady = 10 );
     Label( invFrame, text = 'Placeholder' ).pack();
@@ -59,16 +58,24 @@ def update_steed_stats( steedList, *args ):
     if( specialHorse == 'Brave' ):
         statVals['Sp'] = '2d8';
         statVals['Guts (Spirit)'] = '4d8';
+        noteStr = 'A foolish, brave horse';
     elif( specialHorse == 'Fast' ):
         statVals['Pace'] = '24';
-#    elif( specialHorse == 'Smart' ):
-#        #Add horse note about +2 to users Horse Ridin' skill
+        noteStr = 'Pony Express be darned';
+    elif( specialHorse == 'Smart' ):
+        noteStr = "+2 to user's Horse Ridin' Skill"
     elif( specialHorse == 'Strong' ):
         statVals['STR'] = '3d12';
-#    elif( specialHorse == 'Surly' ):
-#        #Add horse note about kicking and biting with little provocation
+        noteStr = "More muscle'n'a Ghost-Stone-Grown Steak";
+    elif( specialHorse == 'Surly' ):
+        noteStr = 'Bites and kicks with little provocation';
     elif( specialHorse == 'Tough' ):
+        noteStr = "From Russia, with love";
         statVals['V'] = '2d12';
+    else:
+        noteStr = "An ordinary horse. Better'n no horse";
+        
+    steedList[4].set( noteStr );
         
     for iStat in range( len( horseStats ) ):
         # Find the stat label that corresponds to this stat
@@ -77,13 +84,13 @@ def update_steed_stats( steedList, *args ):
         db_log( 'Attempting to set standard horse stat {} to {}'.format( requestedStat, standardStat ) );
         try:
             statInd = attrAbr.index( horseStats[iStat] );
-            steedList[4][requestedStat][1].set( standardStat );
+            steedList[6][requestedStat][1].set( standardStat );
         except ValueError:
             try:
                 statInd = horseSkills.index( horseStats[iStat] );
-                steedList[5][requestedStat][1].set( standardStat );
+                steedList[7][requestedStat][1].set( standardStat );
             except ValueError:
-                steedList[5]['Terror'][1].set( standardStat );
+                steedList[7]['Terror'][1].set( standardStat );
         
         
     return True;
@@ -91,14 +98,20 @@ def update_steed_stats( steedList, *args ):
 def generate_steed_list( steedFrame ):
     Label( steedFrame, text = 'Name: ' ).grid( row = 0, column = 0, padx = 5, pady = 5 );
     Label( steedFrame, text = 'Bent: ' ).grid( row = 0, column = 3, padx = 5, pady = 5 );
+    Label( steedFrame, text = 'Note: ' ).grid( row = 0, column = 6, padx = 5, pady = 5 );
     nameVar = StringVar();
     specialVar = StringVar();
-    steedList = [nameVar, Entry( steedFrame, textvariable = nameVar, width = 30, borderwidth = 5 ), \
-                 specialVar, OptionMenu( steedFrame, specialVar, *horseTypes )];
+    noteVar = StringVar();
+    steedList = [nameVar, \
+                 Entry( steedFrame, textvariable = nameVar, width = 30, borderwidth = 5 ), \
+                 specialVar, \
+                 OptionMenu( steedFrame, specialVar, *horseTypes ), \
+                 noteVar,\
+                 Entry( steedFrame, text = noteVar, width = 40, borderwidth = 5 )];
     
     steedList[1].grid( row = 0, column = 1, columnspan = 2, padx = 10, pady = 10 );
-    
     steedList[3].grid( row = 0, column = 4, columnspan = 2, padx = 5, pady = 5 );
+    steedList[5].grid( row = 0, column = 7, columnspan = 2, padx = 5, pady = 5 );
 
     
     attrDict = {};
