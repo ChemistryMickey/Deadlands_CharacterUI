@@ -94,9 +94,11 @@ menubar = generate_menubar( root, charNameTuple, charClassTuple, attrDict, \
 
 #=========END GUI============
 root.bind( '<Control-s>', lambda event: save_character( charNameTuple, charClassTuple, attrDict, \
-                                                       subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList, equipList ) );
+                                                       subAtrDict, woundDict, chipDict, characterNotes, \
+                                                       gameNotes, edgeList, hindList, equipList ) );
 root.bind( '<Control-l>', lambda event: load_character( charNameTuple, charClassTuple, attrDict, \
-                                                       subAtrDict, woundDict, chipDict, characterNotes, gameNotes, edgeList, hindList, equipList) );
+                                                       subAtrDict, woundDict, chipDict, characterNotes, \
+                                                       gameNotes, edgeList, hindList, equipList) );
 root.bind( '<Control-q>', lambda event: root.destroy() );
 
 root.config( menu = menubar );
