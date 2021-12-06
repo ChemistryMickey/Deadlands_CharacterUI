@@ -47,7 +47,7 @@ def generate_equipment_tab( equipmentTab ):
     inv = {};
     db_log( 'Created Equipment Tab Layout' );
     
-    return [cashVar];
+    return [cashVar, steedList];
 
 def update_steed_stats( steedList, *args ):
     horseStats = list( standardHorse.keys() );
@@ -83,13 +83,11 @@ def update_steed_stats( steedList, *args ):
         standardStat = statVals[requestedStat];
         db_log( 'Attempting to set standard horse stat {} to {}'.format( requestedStat, standardStat ) );
         try:
-            statInd = attrAbr.index( horseStats[iStat] );
             steedList[6][requestedStat][1].set( standardStat );
-        except ValueError:
+        except (ValueError, KeyError) as e:
             try:
-                statInd = horseSkills.index( horseStats[iStat] );
                 steedList[7][requestedStat][1].set( standardStat );
-            except ValueError:
+            except (ValueError, KeyError) as e2:
                 steedList[7]['Terror'][1].set( standardStat );
         
         
@@ -111,7 +109,7 @@ def generate_steed_list( steedFrame ):
     
     steedList[1].grid( row = 0, column = 1, columnspan = 2, padx = 10, pady = 10 );
     steedList[3].grid( row = 0, column = 4, columnspan = 2, padx = 5, pady = 5 );
-    steedList[5].grid( row = 0, column = 7, columnspan = 2, padx = 5, pady = 5 );
+    steedList[5].grid( row = 0, column = 7, columnspan = 3, padx = 5, pady = 5 );
 
     
     attrDict = {};

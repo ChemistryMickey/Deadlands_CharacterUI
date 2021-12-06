@@ -67,7 +67,23 @@ def get_current_character( charNameTuple, charClassTuple, attrDict,\
         curChar.EandD[hindList[iHind][0].get()] = {'Value' : hindList[iHind][2].get(), \
                                                   'Effect' : hindList[iHind][4].get() }
     # Get Equipment in equipment tab
-    curChar.equip = {'Cash' : equipList[0].get()}
+    curChar.equip = {'Cash' : equipList[0].get()};
+    #Horse
+    # Get every entry in the steed list
+    curChar.equip['horse'] = {};
+    curChar.equip['horse']['name'] = equipList[1][0].get();
+    curChar.equip['horse']['special'] = equipList[1][2].get();
+    curChar.equip['horse']['note'] = equipList[1][4].get();
+    for iTObj in range( len( equipList[1] ) ):
+        curObj = equipList[1][iTObj];
+        #db_log( 'Object type: {}'.format( type(curObj) ) );
+        if(  str(type(curObj)) == "<class 'dict'>" ): 
+            #then it's a stat dictionary
+            curDict = equipList[1][iTObj];
+            dictKeys = list( curDict.keys() );
+            for key in dictKeys:
+                db_log( 'Appending {} to "horse" {}'.format( curDict[key][1].get(), key ) );
+                curChar.equip['horse'][key] = curDict[key][1].get();
     
     # Get Wounds
     curChar.wounds = {};

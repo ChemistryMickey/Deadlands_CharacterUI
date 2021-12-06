@@ -1,9 +1,10 @@
 from MDCG_log import db_log
 from tkinter import filedialog as fd
 import json
-
+from copy import deepcopy 
 from config import attributeLabels, subAttributeLabels, maxEandD,\
-                bodyPartLabels, bodyPartAbbr, chipNames, chipTypes
+                bodyPartLabels, bodyPartAbbr, chipNames, chipTypes, \
+                standardHorse, horseSkills, attrAbr
 
 def load_character(charNameTuple, charClassTuple, attrDict, \
                        subAtrDict, woundDict, chipDict, \
@@ -62,6 +63,50 @@ def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
     #Write Equipment
     curEquip = curChar['equip'];
     equipList[0].set( curEquip['Cash'] );
+    equipList[1][0].set( curEquip['horse']['name'] );
+    equipList[1][2].set( curEquip['horse']['special'] );
+    equipList[1][4].set( curEquip['horse']['note'] );
+    
+    horseStats = list( standardHorse.keys() ); 
+    
+    specialHorse = curEquip['horse']['special'];
+    statVals = deepcopy( standardHorse );
+    if( specialHorse == 'Brave' ):
+        statVals['Sp'] = '2d8';
+        statVals['Guts (Spirit)'] = '4d8';
+        noteStr = 'A foolish, brave horse';
+    elif( specialHorse == 'Fast' ):
+        statVals['Pace'] = '24';
+        noteStr = 'Pony Express be darned';
+    elif( specialHorse == 'Smart' ):
+        noteStr = "+2 to user's Horse Ridin' Skill"
+    elif( specialHorse == 'Strong' ):
+        statVals['STR'] = '3d12';
+        noteStr = "More muscle'n'a Ghost-Stone-Grown Steak";
+    elif( specialHorse == 'Surly' ):
+        noteStr = 'Bites and kicks with little provocation';
+    elif( specialHorse == 'Tough' ):
+        noteStr = "From Russia, with love";
+        statVals['V'] = '2d12';
+    else:
+        noteStr = "An ordinary horse. Better'n no horse";
+        
+    equipList[1][4].set( noteStr );
+    
+    for iStat in range( len( horseStats ) ):
+        # Find the stat label that corresponds to this stat
+        requestedStat = horseStats[iStat];
+        standardStat = statVals[requestedStat];
+        db_log( 'Attempting to set standard horse stat {} to {}'.format( requestedStat, standardStat ) );
+        try:
+            equipList[1][6][requestedStat][1].set( standardStat );
+        except (ValueError, KeyError) as e:
+            try:
+                equipList[1][7][requestedStat][1].set( standardStat );
+            except (ValueError, KeyError) as e2:
+                equipList[1][7]['Terror'][1].set( standardStat );
+            
+        
     #Write AA
     
     #Write EandD
@@ -78,6 +123,8 @@ def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
             hindList[iHind][0].set( curEandD_keys[iHind + maxEandD] );
             hindList[iHind][2].set( curEandD[curEandD_keys[iHind + maxEandD]]['Value'] );
             hindList[iHind][4].set( curEandD[curEandD_keys[iHind + maxEandD]]['Effect'] );
+            
+    
         
     #Write Game Notes
     curLog = curChar['gameNotes'];
