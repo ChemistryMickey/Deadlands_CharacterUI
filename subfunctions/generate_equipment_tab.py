@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from MDCG_log import db_log
-from copy import deepcopy
+from copy import deepcopy, copy
 
 import pandas as pd
 from config import attrAbr, horseTypes, horseSkills, standardHorse
@@ -10,8 +10,8 @@ from functools import partial
 maxRows = 10;
 maxCols = 14;
 
-
 def generate_equipment_tab( equipmentTab ):
+    
     db_log( 'Preparing Equipment Tab Layout' );
     weaponFrame = LabelFrame( equipmentTab, text = 'Weapons' );
     moneyFrame  = LabelFrame( equipmentTab, text = 'Cash' );
@@ -20,9 +20,7 @@ def generate_equipment_tab( equipmentTab ):
     invFrame = LabelFrame( equipmentTab, text = 'Ruck' );
     
     weaponFrame.grid( row = 0, column = 0, columnspan = 2, padx = 10, pady = 10 );
-    weaponAttrs = ['Name', 'Shots', 'Caliber', 'RoF', 'Damage', 'Range Incr.', 'Value'];
-    for iWeapon in range( len( weaponAttrs ) ):
-        Label( weaponFrame, text = weaponAttrs[iWeapon] ).grid( row = 0, column = iWeapon, padx = 20, pady = 5 );
+    weaponList = generate_weapon_frame( weaponFrame );
     
     clothesFrame.grid( row = 1, column = 0, padx = 10, pady = 10 );
     clothesAttrs = ['Name', 'Armour', 'Value'];
@@ -43,11 +41,82 @@ def generate_equipment_tab( equipmentTab ):
     invFrame.grid( row = 3, column = 0, columnspan = 2, padx = 10, pady = 10 );
     Label( invFrame, text = 'Placeholder' ).pack();
     # Create basic grid (how do I guarantee that it won't expand beyond the range of the window limits)
-    exampleData = {'Item' : 'Example', 'Quantity' : 5, 'Individual Value' : 10};
-    inv = {};
     db_log( 'Created Equipment Tab Layout' );
     
     return [cashVar, steedList];
+
+def generate_weapon_frame( weaponFrame ):
+    weaponList = [];
+    weaponAttrs = ['Name', 'Shots', 'Caliber', 'RoF', 'Damage', 'Range Incr.', 'Value'];
+    for iWeapon in range( len( weaponAttrs ) ):
+        Label( weaponFrame, text = weaponAttrs[iWeapon] ).grid( row = 0, column = iWeapon, padx = 20, pady = 5 );
+    addWeapon = Button( weaponFrame, text = '+', command = lambda: add_weapon_entry( weaponFrame, weaponList ) );
+    removeWeapon = Button( weaponFrame, text = '-', command = lambda: remove_weapon_entry( weaponFrame, weaponList ) );
+    
+    addWeapon.grid( row = 0, column = 7, padx = 0, pady = 5 );
+    removeWeapon.grid( row = 0, column = 8, padx = 0, pady = 5 );
+    
+        
+    
+    defaultTuple = (StringVar(), \
+                    Entry( weaponFrame, width = 40, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(),\
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(),\
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8 ) ),\
+                    StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ));
+    weaponList.append( defaultTuple );
+    
+    for iCol in range(7):
+        weaponList[0][2*iCol + 1].config( textvariable = defaultTuple[2*iCol] );
+        weaponList[0][2*iCol + 1].grid( row = 1, column = iCol, padx = 2, pady = 5 );
+    
+def add_weapon_entry( weaponFrame, weaponList ):
+    numWeapons = len( weaponList );
+    db_log( 'Attempting to add an entry to the weapon table: {} weapons currently'.format( numWeapons ) );
+    defaultTuple = (StringVar(), \
+                    Entry( weaponFrame, width = 40, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(),\
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(),\
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8 ) ),\
+                    StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ));
+    
+    weaponList.append( defaultTuple );
+    
+    for iCol in range(7):
+        weaponList[-1][2*iCol + 1].config( textvariable = defaultTuple[2*iCol] );
+        weaponList[-1][2*iCol + 1].grid( row = numWeapons + 1, column = iCol, padx = 2, pady = 5 );
+    db_log( 'Added weapon to row {}'.format( numWeapons + 1 ) );
+    
+    db_log('Appended new weapon to weapon list: {}'.format( weaponList ) );
+    return weaponList;
+    
+def remove_weapon_entry( weaponFrame, weaponList ):
+    db_log( 'Attempting to remove entry from the weapon table' );
+    lastTuple = weaponList[-1];
+    for iItem in range( len( lastTuple ) ):
+        try:
+            lastTuple[iItem].destroy();
+        except:
+            db_log("Can't destroy {}".format( lastTuple[iItem] ) );
+    weaponList.pop(-1);
+    return;
+
 
 def update_steed_stats( steedList, *args ):
     horseStats = list( standardHorse.keys() );
