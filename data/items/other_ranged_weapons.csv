@@ -1,4 +1,4 @@
-Item,Ammo,RoF,Damage,Range Inc.,Price
+Item,Ammo,RoF,Damage,Range Increment,Price
 Bolas,Bolo,1,STR + 1d4,5,3
 Bow & Arrow,Arrow,1,STR + 1d6,10,3
 Dynamite,Stick,1,3d20 (BR 10),5,3

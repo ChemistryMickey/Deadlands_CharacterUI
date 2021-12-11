@@ -49,7 +49,7 @@ from generate_character_tab import generate_character_tab
 	
 # Create Equipment Tab
 from generate_equipment_tab import generate_equipment_tab
-equipList = generate_equipment_tab( equipmentTab );
+equipList = generate_equipment_tab( root, equipmentTab );
 
 # Create Arcane Abilities Tab
 # ~ if( DEBUG_LEVEL == DEBUG_LEVELS['Debug'] ):

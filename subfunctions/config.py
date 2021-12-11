@@ -35,5 +35,6 @@ standardHorse = {
             'Sm' : '1d6', 'Sp' : '1d4', 'Guts (Spirit)' : '2d4', 'Overawe (Mien)' : '1d6', 'Terror' : '0',
             'Pace' : '20', 'Size' : '10', 'Wind' : '14/14'
         };
+weaponAttrs = ['Item', 'Class', 'Shots', 'Ammo', 'Caliber', 'RoF', 'Damage', 'Range Increment', 'DB', 'Price'];
 
 maxEandD = 5; #maximum number of edges and hinderances allowed. Determined by Marshal

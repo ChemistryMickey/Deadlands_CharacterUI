@@ -4,13 +4,13 @@ from MDCG_log import db_log
 from copy import deepcopy, copy
 
 import pandas as pd
-from config import attrAbr, horseTypes, horseSkills, standardHorse
+from config import attrAbr, horseTypes, horseSkills, standardHorse, weaponAttrs
 from functools import partial
 
 maxRows = 10;
 maxCols = 14;
 
-def generate_equipment_tab( equipmentTab ):
+def generate_equipment_tab( root, equipmentTab ):
     
     db_log( 'Preparing Equipment Tab Layout' );
     weaponFrame = LabelFrame( equipmentTab, text = 'Weapons' );
@@ -20,7 +20,7 @@ def generate_equipment_tab( equipmentTab ):
     invFrame = LabelFrame( equipmentTab, text = 'Ruck' );
     
     weaponFrame.grid( row = 0, column = 0, columnspan = 2, padx = 10, pady = 10 );
-    weaponList = generate_weapon_frame( weaponFrame );
+    weaponList = generate_weapon_frame( root, weaponFrame );
     
     clothesFrame.grid( row = 1, column = 0, padx = 10, pady = 10 );
     clothesAttrs = ['Name', 'Armour', 'Value'];
@@ -45,16 +45,15 @@ def generate_equipment_tab( equipmentTab ):
     
     return [cashVar, steedList];
 
-def generate_weapon_frame( weaponFrame ):
+def generate_weapon_frame( root, weaponFrame ):
     weaponList = [];
-    weaponAttrs = ['Name', 'Shots', 'Caliber', 'RoF', 'Damage', 'Range Incr.', 'Value'];
     for iWeapon in range( len( weaponAttrs ) ):
         Label( weaponFrame, text = weaponAttrs[iWeapon] ).grid( row = 0, column = iWeapon, padx = 20, pady = 5 );
-    addWeapon = Button( weaponFrame, text = '+', command = lambda: add_weapon_entry( weaponFrame, weaponList ) );
+    addWeapon = Button( weaponFrame, text = '+', command = lambda: add_weapon_entry( root, weaponFrame, weaponList ) );
     removeWeapon = Button( weaponFrame, text = '-', command = lambda: remove_weapon_entry( weaponFrame, weaponList ) );
     
-    addWeapon.grid( row = 0, column = 7, padx = 0, pady = 5 );
-    removeWeapon.grid( row = 0, column = 8, padx = 0, pady = 5 );
+    addWeapon.grid( row = 0, column = 11, padx = 0, pady = 5 );
+    removeWeapon.grid( row = 0, column = 12, padx = 0, pady = 5 );
     
         
     
@@ -71,14 +70,20 @@ def generate_weapon_frame( weaponFrame ):
                     StringVar(), \
                     Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
                     StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(), \
                     Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ));
     weaponList.append( defaultTuple );
     
-    for iCol in range(7):
+    for iCol in range(10):
         weaponList[0][2*iCol + 1].config( textvariable = defaultTuple[2*iCol] );
         weaponList[0][2*iCol + 1].grid( row = 1, column = iCol, padx = 2, pady = 5 );
     
-def add_weapon_entry( weaponFrame, weaponList ):
+def add_weapon_entry( root, weaponFrame, weaponList ):
     numWeapons = len( weaponList );
     db_log( 'Attempting to add an entry to the weapon table: {} weapons currently'.format( numWeapons ) );
     defaultTuple = (StringVar(), \
@@ -86,9 +91,15 @@ def add_weapon_entry( weaponFrame, weaponList ):
                     StringVar(),\
                     Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
                     StringVar(),\
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8 ) ),\
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
                     StringVar(), \
                     Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
+                    StringVar(), \
+                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8 ) ),\
                     StringVar(), \
                     Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
                     StringVar(), \
@@ -96,15 +107,74 @@ def add_weapon_entry( weaponFrame, weaponList ):
                     StringVar(), \
                     Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ));
     
+    requestedWeapon = item_window( root, 'weapon', defaultTuple );
     weaponList.append( defaultTuple );
     
-    for iCol in range(7):
+    for iCol in range(10):
         weaponList[-1][2*iCol + 1].config( textvariable = defaultTuple[2*iCol] );
         weaponList[-1][2*iCol + 1].grid( row = numWeapons + 1, column = iCol, padx = 2, pady = 5 );
     db_log( 'Added weapon to row {}'.format( numWeapons + 1 ) );
     
     db_log('Appended new weapon to weapon list: {}'.format( weaponList ) );
     return weaponList;
+
+def item_window( root, itemClass, dataStruct ):
+    newWindow = Toplevel( root );
+    if( itemClass == 'weapon' ):
+        #grab weapon data
+        shootingIrons = pd.read_csv('./data/items/shooting_irons.csv');
+        db_log('Read Shooting Irons: {}'.format( shootingIrons ) );
+        fullList = list( shootingIrons['Item'] );
+        
+        melee = pd.read_csv( './data/items/fighting_weapons.csv' );
+        db_log('Read Melee Weapons: {}'.format( melee ) );
+        fullList.extend( list( melee['Item'] ) )
+        
+        otherRange = pd.read_csv( './data/items/other_ranged_weapons.csv' );
+        db_log('Read Other Ranged Weapons: {}'.format( otherRange ) );
+        fullList.extend( list( otherRange['Item'] ) );
+        
+        weaponTableList = [shootingIrons, melee, otherRange];
+        fullWeaponTable = pd.concat( weaponTableList );
+        
+        fullList.sort(); #These are your options for the dropdown
+        
+        #select labels
+        fullLabels = weaponAttrs;
+        
+    
+    #build dropdown of available items (alphabetized please Mickey)
+    selectFrame = Frame( newWindow );
+    selectFrame.grid(row = 0, column = 0);
+    selectVar = StringVar();
+    itemMenu = OptionMenu( selectFrame, selectVar, *fullList );
+    itemMenu.grid( row = 0, column = 0, padx = 10, pady = 10 );
+
+    #create custom weapon request
+    custStrs = {};
+    for iLabel in range( len( fullLabels ) ):
+        custStrs[fullLabels[iLabel]] = StringVar();
+        Label( selectFrame, text = fullLabels[iLabel], width = 15 ).grid( row = 1, column = iLabel, padx = 0, pady = 10 );
+        Entry( selectFrame, textvariable = custStrs[fullLabels[iLabel]], width = 15 ).grid( row = 2, column = iLabel, padx = 0, pady = 10 );
+    
+    #Trace selectVar such that it updates the custStrs if you change the item 
+    selectVar.trace("w", partial( update_weapon_choice, selectVar, custStrs, fullWeaponTable ) );
+    #Add buttons to confirm or cancel your choice
+    # Open window
+    newWindow.mainloop();
+    
+def update_weapon_choice( chosenWeapon, weaponLabels, weaponTable, *args ):
+    db_log( 'Requesting {} from Weapons Table'.format( chosenWeapon.get() ) );
+    #Get the table entries for the desired weapon
+    requestedInd = weaponTable['Item'].values.tolist().index( chosenWeapon.get() );
+    
+    for label in weaponAttrs:
+        weaponLabels[label].set( weaponTable[label].values[requestedInd] );
+        
+    return;
+        
+
+    
     
 def remove_weapon_entry( weaponFrame, weaponList ):
     db_log( 'Attempting to remove entry from the weapon table' );
