@@ -1,11 +1,11 @@
-Item,Cost
-Buckerboard,75
-Buggy/Cab,200
-Conestoga Wagon,200
-Horse,150
-Mule,50
-Riverboat (per mile),0.05
-Saddle,25
-Saddlebags,5
-Stagecoach (per mile),0.1
-Train Ticket (per mile),0.05
+Item,Price
+Buckerboard,$75.00
+Buggy/Cab,$200.00
+Conestoga Wagon,$200.00
+Horse,$150.00
+Mule,$50.00
+Riverboat (per mile),$0.05
+Saddle,$25.00
+Saddlebags,$5.00
+Stagecoach (per mile),$0.10
+Train Ticket (per mile),$0.05

@@ -1,6 +1,6 @@
-Item,Cost
-Beer (glass),0.05
-Cheap Shot,0.1
-Cheap Bottle,2
-Good Shot,0.52
-Good Bottle,5
+Item,Price
+Beer (glass),$0.05
+Cheap Shot,$0.10
+Cheap Bottle,$2.00
+Good Shot,$0.52
+Good Bottle,$5.00

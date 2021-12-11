@@ -1,5 +1,5 @@
-Item,Cost
-Blasting cap,1
-Dynamite (per stick),3
-Fuse (per foot),0.05
-Nitro (per pint),2.5
+Item,Price
+Blasting cap,$1.00
+Dynamite (per stick),$3.00
+Fuse (per foot),$0.05
+Nitro (per pint),$2.50

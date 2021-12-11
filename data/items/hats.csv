@@ -1,6 +1,6 @@
-Item,Cost
-Bonnet,2
-Derby,1.5
-Fedora,3
-Sombrero,3.5
-Stetson,5
+Item,Price
+Bonnet,$2.00
+Derby,$1.50
+Fedora,$3.00
+Sombrero,$3.50
+Stetson,$5.00

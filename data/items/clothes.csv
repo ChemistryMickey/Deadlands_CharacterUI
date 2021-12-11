@@ -1,12 +1,12 @@
-Item,Cost
-Boots,8
-Chaps,4
-Duster,10
-Longjohns,2
-"Shirt/blouse, dress",3
-"Shirt/blouse, work",1
-Silk stockings,1
-Shoes,2
-Suit/fancy dress,15
-Trousers/skirt,2
-Winter coat,15
+Item,Armour,Price
+Boots,0,$8.00
+Chaps,-1,$4.00
+Duster,0,$10.00
+Longjohns,0,$2.00
+"Shirt/blouse, dress",0,$3.00
+"Shirt/blouse, work",0,$1.00
+Silk stockings,0,$1.00
+Shoes,0,$2.00
+Suit/fancy dress,0,$15.00
+Trousers/skirt,0,$2.00
+Winter coat,0,$15.00

@@ -1,8 +1,8 @@
-Item,Cost
-Bacon (per pound),0.15
-Coffee (per pound),0.25
-Good breakfast,0.5
-Good lunch,0.25
-Good dinner,1
-Cheap meal,0.25
-Trail rations (per day),0.5
+Item,Price
+Bacon (per pound),$0.15
+Coffee (per pound),$0.25
+Good breakfast,$0.50
+Good lunch,$0.25
+Good dinner,$1.00
+Cheap meal,$0.25
+Trail rations (per day),$0.50
