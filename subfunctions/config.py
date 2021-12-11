@@ -36,5 +36,6 @@ standardHorse = {
             'Pace' : '20', 'Size' : '10', 'Wind' : '14/14'
         };
 weaponAttrs = ['Item', 'Class', 'Shots', 'Ammo', 'Caliber', 'RoF', 'Damage', 'Range Increment', 'DB', 'Price'];
-
+clothesAttrs = ['Item', 'Armour', 'Price'];
+ruckAttrs = ['Item', 'Quantity', 'Price per Unit']
 maxEandD = 5; #maximum number of edges and hinderances allowed. Determined by Marshal
