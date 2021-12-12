@@ -4,28 +4,37 @@ from MDCG_log import db_log
 from copy import deepcopy, copy
 
 import pandas as pd
-from config import attrAbr, horseTypes, horseSkills, standardHorse, weaponAttrs
+from config import attrAbr, horseTypes, horseSkills, standardHorse, \
+                weaponAttrs, clothesAttrs
 from functools import partial
 
 maxRows = 10;
 maxCols = 14;
 
-def generate_equipment_tab( root, equipmentTab ):
+"""
+Lessons learned:
+    Consider the size of your data before selecting a widget ==> Combobox is a better choice for lots of choices than an entry with dynamic dropdown
+"""
+
+
+def generate_equipment_tab( equipmentTab ):
     
     db_log( 'Preparing Equipment Tab Layout' );
-    weaponFrame = LabelFrame( equipmentTab, text = 'Weapons' );
+    
+
+    weaponFrame = LabelFrame( equipmentTab, text = 'Weapons', height = 50);
+#    [interiorWeaponFrame, weaponCanvas, weaponScrlbar] = generate_scrollbar(weaponFrame, 50);
+    
     moneyFrame  = LabelFrame( equipmentTab, text = 'Cash' );
     clothesFrame = LabelFrame( equipmentTab, text = 'Clothing' );
     steedFrame = LabelFrame( equipmentTab, text = 'Mighty Steed' );
     invFrame = LabelFrame( equipmentTab, text = 'Ruck' );
     
     weaponFrame.grid( row = 0, column = 0, columnspan = 2, padx = 10, pady = 10 );
-    weaponList = generate_weapon_frame( root, weaponFrame );
+    weaponList = generate_weapon_frame( weaponFrame );
     
     clothesFrame.grid( row = 1, column = 0, padx = 10, pady = 10 );
-    clothesAttrs = ['Name', 'Armour', 'Value'];
-    for iClothes in range( len( clothesAttrs ) ):
-        Label( clothesFrame, text = clothesAttrs[iClothes] ).grid( row = 0, column = iClothes, padx = 10, pady = 5 );
+    clothesList = generate_clothes_frame( clothesFrame );
     
     moneyFrame.grid( row = 1, column = 1, padx = 10, pady = 10 );
     cashVar = StringVar();
@@ -40,152 +49,125 @@ def generate_equipment_tab( root, equipmentTab ):
     
     invFrame.grid( row = 3, column = 0, columnspan = 2, padx = 10, pady = 10 );
     Label( invFrame, text = 'Placeholder' ).pack();
+    
+    
     # Create basic grid (how do I guarantee that it won't expand beyond the range of the window limits)
     db_log( 'Created Equipment Tab Layout' );
     
     return [cashVar, steedList];
 
-def generate_weapon_frame( root, weaponFrame ):
+def generate_scrollbar( tab, maxheight = 800 ):
+    scrlbar = Scrollbar( tab, orient = VERTICAL );
+    scrlbar.grid( row = 0, column = 1, sticky = 'nsew' );
+    
+    canvas = Canvas( tab, yscrollcommand = scrlbar.set, height = maxheight );
+    canvas.grid( row = 0, column = 0, sticky = 'nsew' );
+    scrlbar.config( command = canvas.yview );
+    
+    canvas.xview_moveto(0)
+    canvas.yview_moveto(0)
+    
+    interiorFrame = ttk.Frame( canvas, height = maxheight );
+    interior_id = canvas.create_window(0, 0, window=interiorFrame,
+                                           anchor=NW)
+    interiorFrame.grid(row = 0, column = 0)
+    
+    def _configure_interior(event):
+            # update the scrollbars to match the size of the inner frame
+            size = (interiorFrame.winfo_reqwidth(), interiorFrame.winfo_reqheight())
+            canvas.config(scrollregion="0 0 %s %s" % size)
+            if interiorFrame.winfo_reqwidth() != canvas.winfo_width():
+                # update the canvas's width to fit the inner frame
+                canvas.config(width=interiorFrame.winfo_reqwidth())
+    interiorFrame.bind('<Configure>', _configure_interior)
+
+    def _configure_canvas(event):
+        if interiorFrame.winfo_reqwidth() != canvas.winfo_width():
+            # update the inner frame's width to fill the canvas
+            canvas.itemconfigure(interior_id, width=canvas.winfo_width())
+    canvas.bind('<Configure>', _configure_canvas)
+    
+    return [interiorFrame, canvas, scrlbar]
+
+def generate_clothes_frame( clothesFrame ):
+    clothesList = [];
+    for iClothes in range( len( clothesAttrs ) ):
+        Label( clothesFrame, text = clothesAttrs[iClothes] ).grid( row = 0, column = iClothes, padx = 10, pady = 5 );
+    addClothes = Button( clothesFrame, text = "+", command = lambda: add_item_entry( clothesFrame, clothesList, 'clothes' ) );
+    
+    addClothes.grid( row = 0, column = 4, padx = 0, pady = 5 );
+    
+def generate_weapon_frame( weaponFrame ):
+    
     weaponList = [];
     for iWeapon in range( len( weaponAttrs ) ):
         Label( weaponFrame, text = weaponAttrs[iWeapon] ).grid( row = 0, column = iWeapon, padx = 20, pady = 5 );
-    addWeapon = Button( weaponFrame, text = '+', command = lambda: add_weapon_entry( root, weaponFrame, weaponList ) );
-    removeWeapon = Button( weaponFrame, text = '-', command = lambda: remove_weapon_entry( weaponFrame, weaponList ) );
+    addWeapon = Button( weaponFrame, text = '+', command = lambda: add_item_entry( weaponFrame, weaponList, 'weapon' ) );
     
-    addWeapon.grid( row = 0, column = 11, padx = 0, pady = 5 );
-    removeWeapon.grid( row = 0, column = 12, padx = 0, pady = 5 );
+    addWeapon.grid( row = 0, column = 10, padx = 0, pady = 5 );
     
-        
-    
-    defaultTuple = (StringVar(), \
-                    Entry( weaponFrame, width = 40, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(),\
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(),\
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8 ) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ));
-    weaponList.append( defaultTuple );
-    
-    for iCol in range(10):
-        weaponList[0][2*iCol + 1].config( textvariable = defaultTuple[2*iCol] );
-        weaponList[0][2*iCol + 1].grid( row = 1, column = iCol, padx = 2, pady = 5 );
-    
-def add_weapon_entry( root, weaponFrame, weaponList ):
-    numWeapons = len( weaponList );
-    db_log( 'Attempting to add an entry to the weapon table: {} weapons currently'.format( numWeapons ) );
-    defaultTuple = (StringVar(), \
-                    Entry( weaponFrame, width = 40, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(),\
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(),\
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8 ) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ),\
-                    StringVar(), \
-                    Entry( weaponFrame, width = 10, borderwidth = 3, font = ('Helvetica', 8) ));
-    
-    requestedWeapon = item_window( root, 'weapon', defaultTuple );
-    weaponList.append( defaultTuple );
-    
-    for iCol in range(10):
-        weaponList[-1][2*iCol + 1].config( textvariable = defaultTuple[2*iCol] );
-        weaponList[-1][2*iCol + 1].grid( row = numWeapons + 1, column = iCol, padx = 2, pady = 5 );
-    db_log( 'Added weapon to row {}'.format( numWeapons + 1 ) );
-    
-    db_log('Appended new weapon to weapon list: {}'.format( weaponList ) );
-    return weaponList;
-
-def item_window( root, itemClass, dataStruct ):
-    newWindow = Toplevel( root );
+   
+def add_item_entry( frame, itemList, itemClass ):
+    numItems = len( itemList );
+    db_log( 'Adding weapon entry {}'.format( numItems ) );
+    itemEntry = [];
+    # Add a row of entries with a combobox first
     if( itemClass == 'weapon' ):
-        #grab weapon data
-        shootingIrons = pd.read_csv('./data/items/shooting_irons.csv');
-        db_log('Read Shooting Irons: {}'.format( shootingIrons ) );
-        fullList = list( shootingIrons['Item'] );
-        
-        melee = pd.read_csv( './data/items/fighting_weapons.csv' );
-        db_log('Read Melee Weapons: {}'.format( melee ) );
-        fullList.extend( list( melee['Item'] ) )
-        
-        otherRange = pd.read_csv( './data/items/other_ranged_weapons.csv' );
-        db_log('Read Other Ranged Weapons: {}'.format( otherRange ) );
-        fullList.extend( list( otherRange['Item'] ) );
-        
-        weaponTableList = [shootingIrons, melee, otherRange];
-        fullWeaponTable = pd.concat( weaponTableList );
-        
-        fullList.sort(); #These are your options for the dropdown
-        
-        #select labels
-        fullLabels = weaponAttrs;
-        
+        options = get_item_options(itemClass);
+        labels = weaponAttrs;
+    elif( itemClass == 'clothes' ):
+        options = get_item_options(itemClass);
+        labels = clothesAttrs;
+    itemBox = ttk.Combobox( frame, width = 40, values = options );
+    itemBox.grid( row = numItems + 1, column = 0, padx = 0, pady = 2 );
     
-    #build dropdown of available items (alphabetized please Mickey)
-    selectFrame = Frame( newWindow );
-    selectFrame.grid(row = 0, column = 0);
-    selectVar = StringVar();
-    itemMenu = OptionMenu( selectFrame, selectVar, *fullList );
-    itemMenu.grid( row = 0, column = 0, padx = 10, pady = 10 );
-
-    #create custom weapon request
-    custStrs = {};
-    for iLabel in range( len( fullLabels ) ):
-        custStrs[fullLabels[iLabel]] = StringVar();
-        Label( selectFrame, text = fullLabels[iLabel], width = 15 ).grid( row = 1, column = iLabel, padx = 0, pady = 10 );
-        Entry( selectFrame, textvariable = custStrs[fullLabels[iLabel]], width = 15 ).grid( row = 2, column = iLabel, padx = 0, pady = 10 );
+    itemEntry.append( itemBox );
     
-    #Trace selectVar such that it updates the custStrs if you change the item 
-    selectVar.trace("w", partial( update_weapon_choice, selectVar, custStrs, fullWeaponTable ) );
-    #Add buttons to confirm or cancel your choice
-    # Open window
-    newWindow.mainloop();
-    
-def update_weapon_choice( chosenWeapon, weaponLabels, weaponTable, *args ):
-    db_log( 'Requesting {} from Weapons Table'.format( chosenWeapon.get() ) );
-    #Get the table entries for the desired weapon
-    requestedInd = weaponTable['Item'].values.tolist().index( chosenWeapon.get() );
-    
-    for label in weaponAttrs:
-        weaponLabels[label].set( weaponTable[label].values[requestedInd] );
-        
+    entryStrs = [];
+    for iEntry in range( len( labels[1:] ) ):
+        entryStrs.append( StringVar() );
+        itemEntry.append( entryStrs[iEntry] );
+        itemEntry.append( Entry( frame, textvariable = entryStrs[iEntry], width = 10 ) );
+        itemEntry[-1].grid( row = numItems + 1, column = iEntry + 1, padx = 0, pady = 2 );
+    itemEntry.append( Button( frame, text = '-', command = lambda c = numItems: remove_item_entry( itemList, c ) ) );
+    itemEntry[-1].grid( row = numItems + 1, column = iEntry + 2, padx = 0, pady = 2 );
+    itemList.append( itemEntry );
     return;
-        
 
-    
-    
-def remove_weapon_entry( weaponFrame, weaponList ):
-    db_log( 'Attempting to remove entry from the weapon table' );
-    lastTuple = weaponList[-1];
-    for iItem in range( len( lastTuple ) ):
+def remove_item_entry( itemList, entryToRemove ):
+    db_log( 'Removing weapon entry {}'.format( entryToRemove ) )
+    for item in itemList[entryToRemove]:
         try:
-            lastTuple[iItem].destroy();
-        except:
-            db_log("Can't destroy {}".format( lastTuple[iItem] ) );
-    weaponList.pop(-1);
-    return;
+            item.destroy();
+        except AttributeError:
+            continue; #db_log( 'Cannot destroy {}'.format( item ) );
+        
+    itemList.remove( itemList[entryToRemove] );
+    
+    # Reassign buttons
+    numItems = len( itemList );
+    for iItem in range( numItems ):
+        itemList[iItem][-1].config( command = lambda c = iItem: remove_item_entry( itemList, c ) );
+    
+def get_item_options(itemClass):
+    itemDir = './data/items/'
+    if( itemClass == 'weapon' ):
+        shootingTable = pd.read_csv('{}/shooting_irons.csv'.format( itemDir ) );
+        fightingTable = pd.read_csv('{}/fighting_weapons.csv'.format( itemDir ) );
+        rangedTable   = pd.read_csv('{}/other_ranged_weapons.csv'.format( itemDir ) );
+    
+        fullTable = pd.concat( [shootingTable, fightingTable, rangedTable] );
+        
+    elif( itemClass == 'clothes' ):
+        hatsTable = pd.read_csv('{}/hats.csv'.format( itemDir ) );
+        clothesTable = pd.read_csv( '{}/clothes.csv'.format( itemDir ) );
+
+        fullTable = pd.concat( [hatsTable, clothesTable] );
+    
+    optionList = list( fullTable['Item'] );
+    optionList.sort();
+    
+    return optionList;
 
 
 def update_steed_stats( steedList, *args ):
