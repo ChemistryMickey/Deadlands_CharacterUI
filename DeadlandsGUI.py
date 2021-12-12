@@ -36,10 +36,13 @@ root = Tk();
 root.title('Deadlands Character GUI');
 root.geometry('1500x800');
 
+ttkCanvas = Canvas( root, width = 1500, height = 800 );
+ttkCanvas.grid( row = 0, column = 0 );
+
 # Create Tab Layout
 from generate_tabs import generate_tabs
 [tabParent, characterTab, equipmentTab, characterNotesTab, \
-				arcaneAbilitiesTab, edgesTab, gameNotesTab, RNGTab, figuresTab] = generate_tabs( root );
+				arcaneAbilitiesTab, edgesTab, gameNotesTab, RNGTab, figuresTab] = generate_tabs( ttkCanvas );
 
 # Create Character Tab
 from generate_character_tab import generate_character_tab
@@ -49,7 +52,7 @@ from generate_character_tab import generate_character_tab
 	
 # Create Equipment Tab
 from generate_equipment_tab import generate_equipment_tab
-equipList = generate_equipment_tab( root, equipmentTab );
+equipList = generate_equipment_tab( equipmentTab );
 
 # Create Arcane Abilities Tab
 # ~ if( DEBUG_LEVEL == DEBUG_LEVELS['Debug'] ):
@@ -93,6 +96,7 @@ menubar = generate_menubar( root, charNameTuple, charClassTuple, attrDict, \
 
 
 #=========END GUI============
+                           
 root.bind( '<Control-s>', lambda event: save_character( charNameTuple, charClassTuple, attrDict, \
                                                        subAtrDict, woundDict, chipDict, characterNotes, \
                                                        gameNotes, edgeList, hindList, equipList ) );
