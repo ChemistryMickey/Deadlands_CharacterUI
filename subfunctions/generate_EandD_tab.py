@@ -72,14 +72,6 @@ def generate_EandD_tab( edgesTab ):
         hindList[iHind][3].grid( row = iHind, column = 1, padx = 10, pady = 10 );
         hindList[iHind][5].grid( row = iHind, column = 2, padx = 10, pady = 10 );    
 
-
-    #Add a button to update labels
-#    updateButton = Button( edgesTab, text = 'Update Labels', height = 2, width = 10,\
-#                          command = lambda: update_labels( edgeList, edgeDict, hindList, hindDict ) );
-#    updateButton.grid( row = 2, column = 0, padx = 10, pady = 10 );
-    #Update button obsolete after trace variables implemented
-        
-
     return [edgeList, hindList];
 
 def update_points( ind, ehList, ehDict, *args ):
