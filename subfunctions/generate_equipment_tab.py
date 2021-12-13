@@ -5,7 +5,7 @@ from copy import deepcopy, copy
 
 import pandas as pd
 from config import attrAbr, horseTypes, horseSkills, standardHorse, \
-                weaponAttrs, clothesAttrs
+                weaponAttrs, clothesAttrs, ruckAttrs
 from functools import partial
 
 maxRows = 10;
@@ -48,46 +48,22 @@ def generate_equipment_tab( equipmentTab ):
     steedList[2].trace("w", partial(update_steed_stats, steedList));
     
     invFrame.grid( row = 3, column = 0, columnspan = 2, padx = 10, pady = 10 );
-    Label( invFrame, text = 'Placeholder' ).pack();
+    invList = generate_inventory_frame( invFrame );
     
     
     # Create basic grid (how do I guarantee that it won't expand beyond the range of the window limits)
     db_log( 'Created Equipment Tab Layout' );
     
-    return [cashVar, steedList];
+    return [cashVar, steedList, weaponList, clothesList, invList];
 
-def generate_scrollbar( tab, maxheight = 800 ):
-    scrlbar = Scrollbar( tab, orient = VERTICAL );
-    scrlbar.grid( row = 0, column = 1, sticky = 'nsew' );
+def generate_inventory_frame( invFrame ):
+    invList = [];
+    for iInv in range( len( ruckAttrs ) ):
+        Label( invFrame, text = ruckAttrs[iInv] ).grid( row = 0, column = iInv, padx = 10, pady = 5 );
+    addItem = Button( invFrame, text = "+", command = lambda: add_item_entry( invFrame, invList, 'everything' ) );
     
-    canvas = Canvas( tab, yscrollcommand = scrlbar.set, height = maxheight );
-    canvas.grid( row = 0, column = 0, sticky = 'nsew' );
-    scrlbar.config( command = canvas.yview );
-    
-    canvas.xview_moveto(0)
-    canvas.yview_moveto(0)
-    
-    interiorFrame = ttk.Frame( canvas, height = maxheight );
-    interior_id = canvas.create_window(0, 0, window=interiorFrame,
-                                           anchor=NW)
-    interiorFrame.grid(row = 0, column = 0)
-    
-    def _configure_interior(event):
-            # update the scrollbars to match the size of the inner frame
-            size = (interiorFrame.winfo_reqwidth(), interiorFrame.winfo_reqheight())
-            canvas.config(scrollregion="0 0 %s %s" % size)
-            if interiorFrame.winfo_reqwidth() != canvas.winfo_width():
-                # update the canvas's width to fit the inner frame
-                canvas.config(width=interiorFrame.winfo_reqwidth())
-    interiorFrame.bind('<Configure>', _configure_interior)
+    addItem.grid( row = 0, column = 3, padx = 0, pady = 5 );
 
-    def _configure_canvas(event):
-        if interiorFrame.winfo_reqwidth() != canvas.winfo_width():
-            # update the inner frame's width to fill the canvas
-            canvas.itemconfigure(interior_id, width=canvas.winfo_width())
-    canvas.bind('<Configure>', _configure_canvas)
-    
-    return [interiorFrame, canvas, scrlbar]
 
 def generate_clothes_frame( clothesFrame ):
     clothesList = [];
@@ -95,10 +71,9 @@ def generate_clothes_frame( clothesFrame ):
         Label( clothesFrame, text = clothesAttrs[iClothes] ).grid( row = 0, column = iClothes, padx = 10, pady = 5 );
     addClothes = Button( clothesFrame, text = "+", command = lambda: add_item_entry( clothesFrame, clothesList, 'clothes' ) );
     
-    addClothes.grid( row = 0, column = 4, padx = 0, pady = 5 );
+    addClothes.grid( row = 0, column = 3, padx = 0, pady = 5 );
     
 def generate_weapon_frame( weaponFrame ):
-    
     weaponList = [];
     for iWeapon in range( len( weaponAttrs ) ):
         Label( weaponFrame, text = weaponAttrs[iWeapon] ).grid( row = 0, column = iWeapon, padx = 20, pady = 5 );
@@ -111,6 +86,7 @@ def add_item_entry( frame, itemList, itemClass ):
     numItems = len( itemList );
     db_log( 'Adding weapon entry {}'.format( numItems ) );
     itemEntry = [];
+    strVar = StringVar();
     # Add a row of entries with a combobox first
     if( itemClass == 'weapon' ):
         options = get_item_options(itemClass);
@@ -118,7 +94,7 @@ def add_item_entry( frame, itemList, itemClass ):
     elif( itemClass == 'clothes' ):
         options = get_item_options(itemClass);
         labels = clothesAttrs;
-    itemBox = ttk.Combobox( frame, width = 40, values = options );
+    itemBox = ttk.Combobox( frame, width = 30, textvariable = strVar, values = options );
     itemBox.grid( row = numItems + 1, column = 0, padx = 0, pady = 2 );
     
     itemEntry.append( itemBox );
@@ -131,9 +107,44 @@ def add_item_entry( frame, itemList, itemClass ):
         itemEntry[-1].grid( row = numItems + 1, column = iEntry + 1, padx = 0, pady = 2 );
     itemEntry.append( Button( frame, text = '-', command = lambda c = numItems: remove_item_entry( itemList, c ) ) );
     itemEntry[-1].grid( row = numItems + 1, column = iEntry + 2, padx = 0, pady = 2 );
+    itemEntry.append( strVar );
     itemList.append( itemEntry );
+    
+    def update_entries(itemClass, *args):
+        db_log( 'Updating item entries' );
+        try:
+            propDict = get_item_props(itemClass, strVar.get());
+                
+            for iEntry in range( len( labels[1:] ) ):
+                entryStrs[iEntry].set( propDict[labels[iEntry + 1]] );
+        except:
+            return; #may be a custom entry and that's OK
+    
+    strVar.trace("w", partial( update_entries, itemClass ) );
     return;
+def get_item_props( itemClass, itemName ):
+    itemDir = './data/items'
+    if( itemClass == 'weapon' ):
+        shootingTable = pd.read_csv('{}/shooting_irons.csv'.format( itemDir ) );
+        fightingTable = pd.read_csv('{}/fighting_weapons.csv'.format( itemDir ) );
+        rangedTable   = pd.read_csv('{}/other_ranged_weapons.csv'.format( itemDir ) );
+    
+        fullTable = pd.concat( [shootingTable, fightingTable, rangedTable] );
+        
+    elif( itemClass == 'clothes' ):
+        hatsTable = pd.read_csv('{}/hats.csv'.format( itemDir ) );
+        clothesTable = pd.read_csv( '{}/clothes.csv'.format( itemDir ) );
 
+        fullTable = pd.concat( [hatsTable, clothesTable] );
+    
+    requestedIndex = list(fullTable['Item'].values).index(itemName);
+    keys = list( fullTable.keys() );
+    properties = {};
+    for key in keys:
+        properties[key] = fullTable[key].values[requestedIndex];
+    
+    return properties;
+    
 def remove_item_entry( itemList, entryToRemove ):
     db_log( 'Removing weapon entry {}'.format( entryToRemove ) )
     for item in itemList[entryToRemove]:
@@ -147,10 +158,10 @@ def remove_item_entry( itemList, entryToRemove ):
     # Reassign buttons
     numItems = len( itemList );
     for iItem in range( numItems ):
-        itemList[iItem][-1].config( command = lambda c = iItem: remove_item_entry( itemList, c ) );
+        itemList[iItem][-2].config( command = lambda c = iItem: remove_item_entry( itemList, c ) );
     
 def get_item_options(itemClass):
-    itemDir = './data/items/'
+    itemDir = './data/items'
     if( itemClass == 'weapon' ):
         shootingTable = pd.read_csv('{}/shooting_irons.csv'.format( itemDir ) );
         fightingTable = pd.read_csv('{}/fighting_weapons.csv'.format( itemDir ) );
@@ -277,3 +288,36 @@ def generate_steed_list( steedFrame ):
     steedList.append( subAtrDict );
         
     return steedList;
+
+def generate_scrollbar( tab, maxheight = 800 ):
+    scrlbar = Scrollbar( tab, orient = VERTICAL );
+    scrlbar.grid( row = 0, column = 1, sticky = 'nsew' );
+    
+    canvas = Canvas( tab, yscrollcommand = scrlbar.set, height = maxheight );
+    canvas.grid( row = 0, column = 0, sticky = 'nsew' );
+    scrlbar.config( command = canvas.yview );
+    
+    canvas.xview_moveto(0)
+    canvas.yview_moveto(0)
+    
+    interiorFrame = ttk.Frame( canvas, height = maxheight );
+    interior_id = canvas.create_window(0, 0, window=interiorFrame,
+                                           anchor=NW)
+    interiorFrame.grid(row = 0, column = 0)
+    
+    def _configure_interior(event):
+            # update the scrollbars to match the size of the inner frame
+            size = (interiorFrame.winfo_reqwidth(), interiorFrame.winfo_reqheight())
+            canvas.config(scrollregion="0 0 %s %s" % size)
+            if interiorFrame.winfo_reqwidth() != canvas.winfo_width():
+                # update the canvas's width to fit the inner frame
+                canvas.config(width=interiorFrame.winfo_reqwidth())
+    interiorFrame.bind('<Configure>', _configure_interior)
+
+    def _configure_canvas(event):
+        if interiorFrame.winfo_reqwidth() != canvas.winfo_width():
+            # update the inner frame's width to fill the canvas
+            canvas.itemconfigure(interior_id, width=canvas.winfo_width())
+    canvas.bind('<Configure>', _configure_canvas)
+    
+    return [interiorFrame, canvas, scrlbar]
