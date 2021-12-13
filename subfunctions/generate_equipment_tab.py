@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from MDCG_log import db_log
 from copy import deepcopy, copy
+from os import listdir
 
 import pandas as pd
 from config import attrAbr, horseTypes, horseSkills, standardHorse, \
@@ -21,33 +22,32 @@ def generate_equipment_tab( equipmentTab ):
     
     db_log( 'Preparing Equipment Tab Layout' );
     
-
-    weaponFrame = LabelFrame( equipmentTab, text = 'Weapons', height = 50);
-#    [interiorWeaponFrame, weaponCanvas, weaponScrlbar] = generate_scrollbar(weaponFrame, 50);
+    [interiorFrame, canvas, scrlbar] = generate_scrollbar( equipmentTab );
     
-    moneyFrame  = LabelFrame( equipmentTab, text = 'Cash' );
-    clothesFrame = LabelFrame( equipmentTab, text = 'Clothing' );
-    steedFrame = LabelFrame( equipmentTab, text = 'Mighty Steed' );
-    invFrame = LabelFrame( equipmentTab, text = 'Ruck' );
+    weaponFrame = LabelFrame( interiorFrame, text = 'Weapons', height = 50);    
+    moneyFrame  = LabelFrame( interiorFrame, text = 'Cash' );
+    clothesFrame = LabelFrame( interiorFrame, text = 'Clothing' );
+    steedFrame = LabelFrame( interiorFrame, text = 'Mighty Steed' );
+    invFrame = LabelFrame( interiorFrame, text = 'Ruck', width = 800 );
     
-    weaponFrame.grid( row = 0, column = 0, columnspan = 2, padx = 10, pady = 10 );
+    weaponFrame.grid( row = 0, column = 0, columnspan = 2, padx = 10, pady = 10, sticky = 'nsew' );
     weaponList = generate_weapon_frame( weaponFrame );
     
-    clothesFrame.grid( row = 1, column = 0, padx = 10, pady = 10 );
+    clothesFrame.grid( row = 1, column = 0, padx = 10, pady = 10, sticky = 'nsew' );
     clothesList = generate_clothes_frame( clothesFrame );
     
-    moneyFrame.grid( row = 1, column = 1, padx = 10, pady = 10 );
+    moneyFrame.grid( row = 1, column = 1, padx = 10, pady = 10, sticky = 'nsew' );
     cashVar = StringVar();
     cashEntry = Entry( moneyFrame, textvariable = cashVar, width = 25, borderwidth = 3, justify = "right" );
     cashEntry.grid( row = 0, column = 0 );
     Label( moneyFrame, text = '$' ).grid( row = 0, column = 1 );
     
     # Create Standard Horse with dropdown for modifiers
-    steedFrame.grid( row = 2, column = 0, columnspan = 2, padx = 10, pady = 10 );
+    steedFrame.grid( row = 2, column = 0, columnspan = 2, padx = 10, pady = 10, sticky = 'nsew' );
     steedList = generate_steed_list( steedFrame );
     steedList[2].trace("w", partial(update_steed_stats, steedList));
     
-    invFrame.grid( row = 3, column = 0, columnspan = 2, padx = 10, pady = 10 );
+    invFrame.grid( row = 3, column = 0, columnspan = 2, padx = 10, pady = 10, sticky = 'nsew' );
     invList = generate_inventory_frame( invFrame );
     
     
@@ -59,8 +59,8 @@ def generate_equipment_tab( equipmentTab ):
 def generate_inventory_frame( invFrame ):
     invList = [];
     for iInv in range( len( ruckAttrs ) ):
-        Label( invFrame, text = ruckAttrs[iInv] ).grid( row = 0, column = iInv, padx = 10, pady = 5 );
-    addItem = Button( invFrame, text = "+", command = lambda: add_item_entry( invFrame, invList, 'everything' ) );
+        Label( invFrame, text = ruckAttrs[iInv], width = 50 ).grid( row = 0, column = iInv, padx = 10, pady = 5 );
+    addItem = Button( invFrame, text = "+", command = lambda: add_item_entry( invFrame, invList, 'ruck' ) );
     
     addItem.grid( row = 0, column = 3, padx = 0, pady = 5 );
 
@@ -84,16 +84,18 @@ def generate_weapon_frame( weaponFrame ):
    
 def add_item_entry( frame, itemList, itemClass ):
     numItems = len( itemList );
-    db_log( 'Adding weapon entry {}'.format( numItems ) );
-    itemEntry = [];
-    strVar = StringVar();
-    # Add a row of entries with a combobox first
-    if( itemClass == 'weapon' ):
-        options = get_item_options(itemClass);
+    db_log( 'Adding {} entry {}'.format( itemClass, numItems ) );
+    
+    options = get_item_options(itemClass);
+    if( itemClass == 'weapon' ):        
         labels = weaponAttrs;
     elif( itemClass == 'clothes' ):
-        options = get_item_options(itemClass);
         labels = clothesAttrs;
+    elif( itemClass == 'ruck' ):
+        labels = ruckAttrs;
+    
+    itemEntry = [];
+    strVar = StringVar();
     itemBox = ttk.Combobox( frame, width = 30, textvariable = strVar, values = options );
     itemBox.grid( row = numItems + 1, column = 0, padx = 0, pady = 2 );
     
@@ -105,7 +107,7 @@ def add_item_entry( frame, itemList, itemClass ):
         itemEntry.append( entryStrs[iEntry] );
         itemEntry.append( Entry( frame, textvariable = entryStrs[iEntry], width = 10 ) );
         itemEntry[-1].grid( row = numItems + 1, column = iEntry + 1, padx = 0, pady = 2 );
-    itemEntry.append( Button( frame, text = '-', command = lambda c = numItems: remove_item_entry( itemList, c ) ) );
+    itemEntry.append( Button( frame, text = '-', command = lambda c = numItems: remove_item_entry( itemList, itemClass, c ) ) );
     itemEntry[-1].grid( row = numItems + 1, column = iEntry + 2, padx = 0, pady = 2 );
     itemEntry.append( strVar );
     itemList.append( itemEntry );
@@ -122,6 +124,7 @@ def add_item_entry( frame, itemList, itemClass ):
     
     strVar.trace("w", partial( update_entries, itemClass ) );
     return;
+    
 def get_item_props( itemClass, itemName ):
     itemDir = './data/items'
     if( itemClass == 'weapon' ):
@@ -136,7 +139,14 @@ def get_item_props( itemClass, itemName ):
         clothesTable = pd.read_csv( '{}/clothes.csv'.format( itemDir ) );
 
         fullTable = pd.concat( [hatsTable, clothesTable] );
-    
+    elif( itemClass == 'ruck' ):
+        #LOAD EVERY CSV. LOAD THEM ALL!!!!
+        csvList = [];
+        for csv in listdir( './data/items' ):
+            csvList.append( pd.read_csv('./data/items/{}'.format( csv ) ) );
+            
+        fullTable = pd.concat( csvList );
+        
     requestedIndex = list(fullTable['Item'].values).index(itemName);
     keys = list( fullTable.keys() );
     properties = {};
@@ -145,8 +155,8 @@ def get_item_props( itemClass, itemName ):
     
     return properties;
     
-def remove_item_entry( itemList, entryToRemove ):
-    db_log( 'Removing weapon entry {}'.format( entryToRemove ) )
+def remove_item_entry( itemList, itemClass, entryToRemove ):
+    db_log( 'Removing {} entry {}'.format( itemClass, entryToRemove ) )
     for item in itemList[entryToRemove]:
         try:
             item.destroy();
@@ -158,7 +168,7 @@ def remove_item_entry( itemList, entryToRemove ):
     # Reassign buttons
     numItems = len( itemList );
     for iItem in range( numItems ):
-        itemList[iItem][-2].config( command = lambda c = iItem: remove_item_entry( itemList, c ) );
+        itemList[iItem][-2].config( command = lambda c = iItem: remove_item_entry( itemList, itemClass, c ) );
     
 def get_item_options(itemClass):
     itemDir = './data/items'
@@ -175,6 +185,13 @@ def get_item_options(itemClass):
 
         fullTable = pd.concat( [hatsTable, clothesTable] );
     
+    elif( itemClass == 'ruck' ):
+        #LOAD EVERY CSV. LOAD THEM ALL!!!!
+        csvList = [];
+        for csv in listdir( './data/items' ):
+            csvList.append( pd.read_csv('./data/items/{}'.format( csv ) ) );
+            
+        fullTable = pd.concat( csvList );
     optionList = list( fullTable['Item'] );
     optionList.sort();
     
@@ -291,33 +308,46 @@ def generate_steed_list( steedFrame ):
 
 def generate_scrollbar( tab, maxheight = 800 ):
     scrlbar = Scrollbar( tab, orient = VERTICAL );
-    scrlbar.grid( row = 0, column = 1, sticky = 'nsew' );
+    scrlbar.pack( fill = Y, side = RIGHT );
     
-    canvas = Canvas( tab, yscrollcommand = scrlbar.set, height = maxheight );
-    canvas.grid( row = 0, column = 0, sticky = 'nsew' );
+    canvas = Canvas( tab, yscrollcommand = scrlbar.set );
+    canvas.pack( expand = 1, fill = BOTH );
     scrlbar.config( command = canvas.yview );
     
     canvas.xview_moveto(0)
     canvas.yview_moveto(0)
     
-    interiorFrame = ttk.Frame( canvas, height = maxheight );
-    interior_id = canvas.create_window(0, 0, window=interiorFrame,
-                                           anchor=NW)
-    interiorFrame.grid(row = 0, column = 0)
+    interiorFrame = ttk.Frame( tab, height = maxheight );
+    interior_id = canvas.create_window(0, 0, window=interiorFrame, anchor=NW)
+#    interiorFrame.pack(expand = 1, fill = BOTH)
     
+    scrlbar.lift(interiorFrame);
+        
+    def _bound_to_mousewheel(event):
+        canvas.bind_all("<MouseWheel>", _on_mousewheel)   
+
+    def _unbound_to_mousewheel(event):
+        canvas.unbind_all("<MouseWheel>") 
+
+    def _on_mousewheel(event):
+        canvas.yview_scroll(int(-1*(event.delta/120)), "units")  
+        
     def _configure_interior(event):
             # update the scrollbars to match the size of the inner frame
             size = (interiorFrame.winfo_reqwidth(), interiorFrame.winfo_reqheight())
             canvas.config(scrollregion="0 0 %s %s" % size)
             if interiorFrame.winfo_reqwidth() != canvas.winfo_width():
                 # update the canvas's width to fit the inner frame
-                canvas.config(width=interiorFrame.winfo_reqwidth())
-    interiorFrame.bind('<Configure>', _configure_interior)
+                canvas.config(width=interiorFrame.winfo_reqwidth());    
 
     def _configure_canvas(event):
         if interiorFrame.winfo_reqwidth() != canvas.winfo_width():
             # update the inner frame's width to fill the canvas
             canvas.itemconfigure(interior_id, width=canvas.winfo_width())
+            
+            
     canvas.bind('<Configure>', _configure_canvas)
-    
+    interiorFrame.bind('<Configure>', _configure_interior)
+    scrlbar.bind('<Enter>', _bound_to_mousewheel)
+    scrlbar.bind('<Leave>', _unbound_to_mousewheel)
     return [interiorFrame, canvas, scrlbar]
