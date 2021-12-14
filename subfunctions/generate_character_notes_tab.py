@@ -5,7 +5,7 @@ from MDCG_log import db_log
 def generate_character_notes_tab( characterNotesTab ) :
 	db_log( 'Preparing Character Notes' );
 
-	T = Text( characterNotesTab, height = 40, width = 100, relief = 'groove', state = 'normal' );
+	T = Text( characterNotesTab, height = 40, width = 175, relief = 'groove', state = 'normal' );
 	scroll = Scrollbar(characterNotesTab, command=T.yview)
 	T.configure( yscrollcommand = scroll.set );
 	
