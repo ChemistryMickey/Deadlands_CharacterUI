@@ -5,6 +5,8 @@ from copy import deepcopy
 from config import attributeLabels, subAttributeLabels, maxEandD,\
                 bodyPartLabels, bodyPartAbbr, chipNames, chipTypes, \
                 standardHorse, horseSkills, attrAbr
+                
+from generate_equipment_tab import add_item_entry
 
 def load_character(charNameTuple, charClassTuple, attrDict, \
                        subAtrDict, woundDict, chipDict, \
@@ -19,6 +21,7 @@ def load_character(charNameTuple, charClassTuple, attrDict, \
                            subAtrDict, woundDict, chipDict, \
                            characterNotes, gameNotes, edgeList, hindList, equipList );
     db_log( 'Successfully wrote character data to GUI!' );
+    return equipList;
     
 def open_character_file():
     # use UI getter to get character file
@@ -93,6 +96,7 @@ def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
         
     equipList[1][4].set( noteStr );
     
+    #Horse   
     for iStat in range( len( horseStats ) ):
         # Find the stat label that corresponds to this stat
         requestedStat = horseStats[iStat];
@@ -105,7 +109,46 @@ def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
                 equipList[1][7][requestedStat][1].set( standardStat );
             except (ValueError, KeyError) as e2:
                 equipList[1][7]['Terror'][1].set( standardStat );
-            
+    
+    #Weapons
+    weaponFrame = equipList[5][0];    
+    weaponList = [];
+    curWeaponDict = curEquip['weapons'];
+    db_log( 'Current Weapons: {}'.format( curWeaponDict ) );
+    for iWeapon in range( len( curWeaponDict ) ):
+        add_item_entry( weaponFrame, weaponList, 'weapon' );
+        requestedWeapon = list(curWeaponDict.keys())[iWeapon]
+        db_log( 'Requested Weapon: {}'.format( requestedWeapon ) );
+        weaponList[iWeapon][-1].set( requestedWeapon );
+        weaponList[iWeapon][3].set( curWeaponDict[requestedWeapon] );
+    db_log( 'Constructed weaponList with length {}'.format( len( weaponList ) ) );
+    equipList[2] = weaponList;
+    
+    
+    clothesFrame = equipList[5][1];    
+    clothesList = [];
+    curClothesDict = curEquip['clothes'];
+    db_log( 'Current Clothes: {}'.format( curClothesDict ) );
+    for iCloth in range( len( curClothesDict ) ):
+        add_item_entry( clothesFrame, clothesList, 'clothes' );
+        requestedCloth = list(curClothesDict.keys())[iCloth]
+        db_log( 'Requested Clothes: {}'.format( requestedCloth ) );
+        clothesList[iCloth][-1].set( requestedCloth );
+    db_log( 'Constructed clothesList with length {}'.format( len( clothesList ) ) );
+    equipList[3] = clothesList;
+    
+    invFrame = equipList[5][2];    
+    invList = [];
+    curItemDict = curEquip['inventory'];
+    db_log( 'Current Inventory: {}'.format( curItemDict ) );
+    for iRuck in range( len( curItemDict ) ):
+        add_item_entry( invFrame, invList, 'ruck' );
+        requestedItem = list(curItemDict.keys())[iRuck]
+        db_log( 'Requested Item: {}'.format( requestedItem ) );
+        invList[iRuck][-1].set( requestedItem );
+        invList[iRuck][3].set( curItemDict[requestedItem] );
+    db_log( 'Constructed inventory with length {}'.format( len( invList ) ) );
+    equipList[4] = invList;            
         
     #Write AA
     
@@ -114,15 +157,17 @@ def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
     curEandD_keys = list( curEandD.keys() );
     db_log( 'Current Edges and Hinderances: {}'.format( curEandD_keys ) );
     if( curEandD_keys[0] != '' ):
-        for iEdge in range( maxEandD ):
+        for iEdge in range( len( curEandD_keys ) ):
             edgeList[iEdge][0].set( curEandD_keys[iEdge] );
             edgeList[iEdge][2].set( curEandD[curEandD_keys[iEdge]]['Value'] );
             edgeList[iEdge][4].set( curEandD[curEandD_keys[iEdge]]['Effect'] );
         
-        for iHind in range( maxEandD ):
-            hindList[iHind][0].set( curEandD_keys[iHind + maxEandD] );
-            hindList[iHind][2].set( curEandD[curEandD_keys[iHind + maxEandD]]['Value'] );
-            hindList[iHind][4].set( curEandD[curEandD_keys[iHind + maxEandD]]['Effect'] );
+        for iHind in range( len( curEandD_keys ) ):
+            requestedHind = curEandD_keys[iHind + maxEandD];
+            db_log( 'Requested Hinderance to load: {} (index {})'.format( requestedHind, iHind ) );
+            hindList[iHind][0].set( requestedHind );
+            hindList[iHind][2].set( curEandD[requestedHind]['Value'] );
+            hindList[iHind][4].set( curEandD[requestedHind]['Effect'] );
             
     
         
@@ -133,5 +178,5 @@ def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
     #Write Character Notes
     curNotes = curChar['charNotes'];
     characterNotes[1].insert( "1.0", curNotes['Character Notes'] );
-    return;
+    return [equipList, gameNotes, characterNotes];
     

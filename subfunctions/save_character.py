@@ -68,6 +68,24 @@ def get_current_character( charNameTuple, charClassTuple, attrDict,\
                                                   'Effect' : hindList[iHind][4].get() }
     # Get Equipment in equipment tab
     curChar.equip = {'Cash' : equipList[0].get()};
+    
+    curChar.equip['weapons'] = {};
+    for iWeap in range( len( equipList[2] ) ):
+        curWeapon = equipList[2][iWeap][-1].get();
+        curShots = equipList[2][iWeap][3].get();
+        curChar.equip['weapons'][curWeapon] = curShots;
+        
+    curChar.equip['clothes'] = {};
+    db_log( 'Clothes Equipment List: {}'.format( equipList[3] ) );
+    for iCloth in range( len( equipList[3] ) ):
+        curChar.equip['clothes'][equipList[3][iCloth][-1].get()] = 0;
+    
+    curChar.equip['inventory'] = {};
+    for iInv in range( len( equipList[4] ) ):
+        curItem = equipList[4][iInv][-1].get()
+        itemQuant = equipList[4][iInv][3].get();
+        curChar.equip['inventory'][curItem] = itemQuant; #get quantity
+    
     #Horse
     # Get every entry in the steed list
     curChar.equip['horse'] = {};

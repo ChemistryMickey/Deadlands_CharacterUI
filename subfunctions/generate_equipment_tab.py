@@ -31,10 +31,12 @@ def generate_equipment_tab( equipmentTab ):
     invFrame = LabelFrame( interiorFrame, text = 'Ruck', width = 800 );
     
     weaponFrame.grid( row = 0, column = 0, columnspan = 2, padx = 10, pady = 10, sticky = 'nsew' );
-    weaponList = generate_weapon_frame( weaponFrame );
+    weaponList = []
+    generate_weapon_frame( weaponFrame, weaponList );
     
     clothesFrame.grid( row = 1, column = 0, padx = 10, pady = 10, sticky = 'nsew' );
-    clothesList = generate_clothes_frame( clothesFrame );
+    clothesList = [];
+    generate_clothes_frame( clothesFrame, clothesList );
     
     moneyFrame.grid( row = 1, column = 1, padx = 10, pady = 10, sticky = 'nsew' );
     cashVar = StringVar();
@@ -48,42 +50,48 @@ def generate_equipment_tab( equipmentTab ):
     steedList[2].trace("w", partial(update_steed_stats, steedList));
     
     invFrame.grid( row = 3, column = 0, columnspan = 2, padx = 10, pady = 10, sticky = 'nsew' );
-    invList = generate_inventory_frame( invFrame );
+    invList = [];
+    generate_inventory_frame( invFrame, invList );
     
     
     # Create basic grid (how do I guarantee that it won't expand beyond the range of the window limits)
     db_log( 'Created Equipment Tab Layout' );
     
-    return [cashVar, steedList, weaponList, clothesList, invList];
+    frames = [weaponFrame, clothesFrame, invFrame];
+    return [cashVar, steedList, weaponList, clothesList, invList, frames];
 
-def generate_inventory_frame( invFrame ):
-    invList = [];
+def generate_inventory_frame( invFrame, invList ):
     for iInv in range( len( ruckAttrs ) ):
         Label( invFrame, text = ruckAttrs[iInv], width = 50 ).grid( row = 0, column = iInv, padx = 10, pady = 5 );
     addItem = Button( invFrame, text = "+", command = lambda: add_item_entry( invFrame, invList, 'ruck' ) );
     
-    addItem.grid( row = 0, column = 3, padx = 0, pady = 5 );
+    addItem.grid( row = 0, column = 3, padx = 0, pady = 0 );
+    
+    return invList;
 
 
-def generate_clothes_frame( clothesFrame ):
-    clothesList = [];
+def generate_clothes_frame( clothesFrame, clothesList ):
     for iClothes in range( len( clothesAttrs ) ):
         Label( clothesFrame, text = clothesAttrs[iClothes] ).grid( row = 0, column = iClothes, padx = 10, pady = 5 );
     addClothes = Button( clothesFrame, text = "+", command = lambda: add_item_entry( clothesFrame, clothesList, 'clothes' ) );
     
-    addClothes.grid( row = 0, column = 3, padx = 0, pady = 5 );
+    addClothes.grid( row = 0, column = 3, padx = 0, pady = 0 );
     
-def generate_weapon_frame( weaponFrame ):
-    weaponList = [];
+    return clothesList;
+    
+def generate_weapon_frame( weaponFrame, weaponList ):
     for iWeapon in range( len( weaponAttrs ) ):
         Label( weaponFrame, text = weaponAttrs[iWeapon] ).grid( row = 0, column = iWeapon, padx = 20, pady = 5 );
     addWeapon = Button( weaponFrame, text = '+', command = lambda: add_item_entry( weaponFrame, weaponList, 'weapon' ) );
     
-    addWeapon.grid( row = 0, column = 10, padx = 0, pady = 5 );
+    addWeapon.grid( row = 0, column = 10, padx = 0, pady = 0 );
+    
+    return weaponList;
     
    
 def add_item_entry( frame, itemList, itemClass ):
-    numItems = len( itemList );
+    # Item Entry Structure [ComboBox, entryStrs[iEntry], entry, ..., Button, ComboBoxStr]
+    numItems = get_num_item_rows( frame );
     db_log( 'Adding {} entry {}'.format( itemClass, numItems ) );
     
     options = get_item_options(itemClass);
@@ -95,9 +103,9 @@ def add_item_entry( frame, itemList, itemClass ):
         labels = ruckAttrs;
     
     itemEntry = [];
-    strVar = StringVar();
-    itemBox = ttk.Combobox( frame, width = 30, textvariable = strVar, values = options );
-    itemBox.grid( row = numItems + 1, column = 0, padx = 0, pady = 2 );
+    combStr = StringVar();
+    itemBox = ttk.Combobox( frame, width = 30, textvariable = combStr, values = options );
+    itemBox.grid( row = numItems + 1, column = 0, padx = 0, pady = 0 );
     
     itemEntry.append( itemBox );
     
@@ -106,25 +114,39 @@ def add_item_entry( frame, itemList, itemClass ):
         entryStrs.append( StringVar() );
         itemEntry.append( entryStrs[iEntry] );
         itemEntry.append( Entry( frame, textvariable = entryStrs[iEntry], width = 10 ) );
-        itemEntry[-1].grid( row = numItems + 1, column = iEntry + 1, padx = 0, pady = 2 );
+        itemEntry[-1].grid( row = numItems + 1, column = iEntry + 1, padx = 0, pady = 0 );
     itemEntry.append( Button( frame, text = '-', command = lambda c = numItems: remove_item_entry( itemList, itemClass, c ) ) );
-    itemEntry[-1].grid( row = numItems + 1, column = iEntry + 2, padx = 0, pady = 2 );
-    itemEntry.append( strVar );
+    itemEntry[-1].grid( row = numItems + 1, column = iEntry + 2, padx = 0, pady = 0 );
+    itemEntry.append( combStr );
     itemList.append( itemEntry );
     
     def update_entries(itemClass, *args):
         db_log( 'Updating item entries' );
         try:
-            propDict = get_item_props(itemClass, strVar.get());
+            propDict = get_item_props(itemClass, combStr.get());
                 
             for iEntry in range( len( labels[1:] ) ):
                 entryStrs[iEntry].set( propDict[labels[iEntry + 1]] );
         except:
             return; #may be a custom entry and that's OK
     
-    strVar.trace("w", partial( update_entries, itemClass ) );
-    return;
+    combStr.trace("w", partial( update_entries, itemClass ) );
     
+    #Reassign buttons in case of load
+    numItems = len( itemList );
+    for iItem in range( numItems ):
+        itemList[iItem][-2].config( command = lambda c = iItem: remove_item_entry( itemList, itemClass, c ) );
+        
+    return itemList;
+
+def get_num_item_rows( frame ):
+    numItems = 0;
+    for item in frame.children:
+        if( 'combo' in str( item )  ):
+            numItems += 1;
+    #count the number of comboboxes to get the number of items
+    return numItems;
+  
 def get_item_props( itemClass, itemName ):
     itemDir = './data/items'
     if( itemClass == 'weapon' ):
