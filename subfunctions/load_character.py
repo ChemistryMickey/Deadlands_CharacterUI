@@ -153,21 +153,26 @@ def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
     #Write AA
     
     #Write EandD
-    curEandD = curChar['EandD'];
-    curEandD_keys = list( curEandD.keys() );
-    db_log( 'Current Edges and Hinderances: {}'.format( curEandD_keys ) );
-    if( curEandD_keys[0] != '' ):
-        for iEdge in range( len( curEandD_keys ) ):
-            edgeList[iEdge][0].set( curEandD_keys[iEdge] );
-            edgeList[iEdge][2].set( curEandD[curEandD_keys[iEdge]]['Value'] );
-            edgeList[iEdge][4].set( curEandD[curEandD_keys[iEdge]]['Effect'] );
+    curEdges = curChar['edges'];
+    curEdgeKeys = list( curEdges.keys() );
+    db_log( 'Current Edges: {}'.format( curEdgeKeys ) );
+    if( curEdgeKeys[0] != '' ):
+        for iEdge in range( len( curEdgeKeys ) ):
+            requestedEdge = curEdgeKeys[iEdge];
+            edgeList[iEdge][0].set( requestedEdge );
+            edgeList[iEdge][2].set( curEdges[requestedEdge]['Value'] );
+            edgeList[iEdge][4].set( curEdges[requestedEdge]['Effect'] );
         
-        for iHind in range( len( curEandD_keys ) ):
-            requestedHind = curEandD_keys[iHind + maxEandD];
+    curHinds = curChar['hinds'];
+    curHindKeys = list( curHinds.keys() );
+    db_log( 'Current Hinderances: {}'.format( curHindKeys ) );
+    if( curHindKeys[0] != '' ):
+        for iHind in range( len( curHindKeys ) ):
+            requestedHind = curHindKeys[iHind];
             db_log( 'Requested Hinderance to load: {} (index {})'.format( requestedHind, iHind ) );
             hindList[iHind][0].set( requestedHind );
-            hindList[iHind][2].set( curEandD[requestedHind]['Value'] );
-            hindList[iHind][4].set( curEandD[requestedHind]['Effect'] );
+            hindList[iHind][2].set( curHinds[requestedHind]['Value'] );
+            hindList[iHind][4].set( curHinds[requestedHind]['Effect'] );
             
     
         

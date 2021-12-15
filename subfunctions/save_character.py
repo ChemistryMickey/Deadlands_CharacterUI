@@ -58,13 +58,13 @@ def get_current_character( charNameTuple, charClassTuple, attrDict,\
     # Get Arcane Abilities in AB tab
     
     # Get EandD in EandD tab
-    curChar.EandD.clear();
-    for iEdge in range( maxEandD ):
-        curChar.EandD[edgeList[iEdge][0].get()] = {'Value'  : edgeList[iEdge][2].get(), \
+    curChar.edges.clear();
+    for iEdge in range( len( edgeList ) ):
+        curChar.edges[edgeList[iEdge][0].get()] = {'Value'  : edgeList[iEdge][2].get(), \
                                                    'Effect' : edgeList[iEdge][4].get() }
-        
-    for iHind in range( maxEandD ):
-        curChar.EandD[hindList[iHind][0].get()] = {'Value' : hindList[iHind][2].get(), \
+    curChar.hinds.clear();    
+    for iHind in range( len( hindList ) ):
+        curChar.hinds[hindList[iHind][0].get()] = {'Value' : hindList[iHind][2].get(), \
                                                   'Effect' : hindList[iHind][4].get() }
     # Get Equipment in equipment tab
     curChar.equip = {'Cash' : equipList[0].get()};
