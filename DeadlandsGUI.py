@@ -55,12 +55,8 @@ from generate_equipment_tab import generate_equipment_tab
 equipList = generate_equipment_tab( equipmentTab );
 
 # Create Arcane Abilities Tab
-# ~ if( DEBUG_LEVEL == DEBUG_LEVELS['Debug'] ):
-	# ~ MDCG_tee('Preparing Arcane Abilities Tab Layout');
-testLabel = Label( arcaneAbilitiesTab, text = 'Test Label' );
+testLabel = Label( arcaneAbilitiesTab, text = "Blank until my Marshal gives me permisssion to read Arcane Abilities section of Player's Guide" );
 testLabel.grid( row = 0, column = 0 );
-# ~ if( DEBUG_LEVEL == DEBUG_LEVELS['Debug'] ):
-	# ~ MDCG_tee('Created Arcane Abilities Tab Layout');
 	
 # Create Edges and Hindrances Tab
 from generate_EandD_tab import generate_EandD_tab

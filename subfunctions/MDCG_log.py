@@ -19,7 +19,7 @@ def investigate( obj ):
     print( 'Values:');
     print_vals( objVals, 4 );
 
-def print_vals( listObj, numCols ):
+def print_vals( listObj, numCols = 3 ):
     numRows = floor( len( listObj ) / numCols );
     longestWord = get_longest_entry( listObj );
     
