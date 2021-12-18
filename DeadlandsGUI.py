@@ -22,6 +22,13 @@ scriptPath = pathlib.Path( __file__ ).parent.resolve();
 subfunctionPath = '{}/subfunctions'.format( scriptPath );
 sys.path.append( subfunctionPath );
 
+from os import mkdir
+from os.path import exists
+requiredDataDirs = ['data', 'data/characters', 'data/EandD', 'data/figures', 'data/items'];
+for reqDir in requiredDataDirs:
+    if( not exists( '{}/{}'.format( scriptPath, reqDir ) ) ):
+        mkdir( '{}/{}'.format( scriptPath, reqDir ) );
+
 # Import subfunctions
 from MDCG_log import db_log
 from save_character import save_character
