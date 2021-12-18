@@ -5,13 +5,12 @@
 	Author: Mickey T Da Silva
 	Version: 0.0
 	ToDo:
-		- Create Equipment Tab
 		- Create Arcane Abilities Tab
+        
+    Reach Goals:
         - Create character creation widget
         - Create encounter tracker
-		- Export as .txt function
-        - Track exploding dice such that the highest sum is taken
-        
+		- Export as .txt function        
 """
 
 from tkinter import *
