@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import ttk
-from MDCG_log import db_log
+from MDCG_log import db_log, investigate
 from copy import deepcopy, copy
 from os import listdir
 
@@ -61,6 +61,7 @@ def generate_equipment_tab( equipmentTab ):
     return [cashVar, steedList, weaponList, clothesList, invList, frames];
 
 def generate_inventory_frame( invFrame, invList ):
+    clear_frame( invFrame );
     for iInv in range( len( ruckAttrs ) ):
         Label( invFrame, text = ruckAttrs[iInv], width = 50 ).grid( row = 0, column = iInv, padx = 10, pady = 5 );
     addItem = Button( invFrame, text = "+", command = lambda: add_item_entry( invFrame, invList, 'ruck' ) );
@@ -71,6 +72,7 @@ def generate_inventory_frame( invFrame, invList ):
 
 
 def generate_clothes_frame( clothesFrame, clothesList ):
+    clear_frame( clothesFrame );
     for iClothes in range( len( clothesAttrs ) ):
         Label( clothesFrame, text = clothesAttrs[iClothes] ).grid( row = 0, column = iClothes, padx = 10, pady = 5 );
     addClothes = Button( clothesFrame, text = "+", command = lambda: add_item_entry( clothesFrame, clothesList, 'clothes' ) );
@@ -80,6 +82,8 @@ def generate_clothes_frame( clothesFrame, clothesList ):
     return clothesList;
     
 def generate_weapon_frame( weaponFrame, weaponList ):
+    # Clear the frame
+    clear_frame( weaponFrame );
     for iWeapon in range( len( weaponAttrs ) ):
         Label( weaponFrame, text = weaponAttrs[iWeapon] ).grid( row = 0, column = iWeapon, padx = 20, pady = 5 );
     addWeapon = Button( weaponFrame, text = '+', command = lambda: add_item_entry( weaponFrame, weaponList, 'weapon' ) );
@@ -88,7 +92,16 @@ def generate_weapon_frame( weaponFrame, weaponList ):
     
     return weaponList;
     
-   
+def clear_frame( frame ):
+    db_log( 'Clearing frame {} with children {}'.format( frame, frame.children ) );
+    childList = frame.grid_slaves();
+    for item in childList:
+        try:
+            item.destroy();
+            db_log( 'Deleting item {} from frame {}'.format( item, frame ) );
+        except:
+            continue;
+            
 def add_item_entry( frame, itemList, itemClass ):
     # Item Entry Structure [ComboBox, entryStrs[iEntry], entry, ..., Button, ComboBoxStr]
     numItems = get_num_item_rows( frame );
@@ -120,7 +133,7 @@ def add_item_entry( frame, itemList, itemClass ):
     itemEntry.append( combStr );
     itemList.append( itemEntry );
     
-    def update_entries(itemClass, *args):
+    def update_entries(*args):
         db_log( 'Updating item entries' );
         try:
             propDict = get_item_props(itemClass, combStr.get());
@@ -130,7 +143,7 @@ def add_item_entry( frame, itemList, itemClass ):
         except:
             return; #may be a custom entry and that's OK
     
-    combStr.trace("w", partial( update_entries, itemClass ) );
+    combStr.trace("w", partial( update_entries ) );
     
     #Reassign buttons in case of load
     numItems = len( itemList );
