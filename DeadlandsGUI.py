@@ -3,7 +3,7 @@
 	
 	
 	Author: Mickey T Da Silva
-	Version: 0.0
+	Version: 0.1
 	ToDo:
 		- Create Arcane Abilities Tab
         
