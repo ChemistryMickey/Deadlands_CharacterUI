@@ -6,7 +6,7 @@ from config import attributeLabels, subAttributeLabels, maxEandD,\
                 bodyPartLabels, bodyPartAbbr, chipNames, chipTypes, \
                 standardHorse, horseSkills, attrAbr
                 
-from generate_equipment_tab import add_item_entry
+from generate_equipment_tab import add_item_entry, generate_weapon_frame, generate_clothes_frame, generate_inventory_frame
 
 def load_character(charNameTuple, charClassTuple, attrDict, \
                        subAtrDict, woundDict, chipDict, \
@@ -111,8 +111,9 @@ def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
                 equipList[1][7]['Terror'][1].set( standardStat );
     
     #Weapons
-    weaponFrame = equipList[5][0];    
+    weaponFrame = equipList[5][0];
     weaponList = [];
+    generate_weapon_frame( weaponFrame, weaponList );
     curWeaponDict = curEquip['weapons'];
     db_log( 'Current Weapons: {}'.format( curWeaponDict ) );
     for iWeapon in range( len( curWeaponDict ) ):
@@ -124,9 +125,9 @@ def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
     db_log( 'Constructed weaponList with length {}'.format( len( weaponList ) ) );
     equipList[2] = weaponList;
     
-    
-    clothesFrame = equipList[5][1];    
+    clothesFrame = equipList[5][1];
     clothesList = [];
+    generate_clothes_frame( clothesFrame, clothesList );
     curClothesDict = curEquip['clothes'];
     db_log( 'Current Clothes: {}'.format( curClothesDict ) );
     for iCloth in range( len( curClothesDict ) ):
@@ -139,6 +140,7 @@ def write_character_to_GUI( curChar, charNameTuple, charClassTuple, attrDict, \
     
     invFrame = equipList[5][2];    
     invList = [];
+    generate_inventory_frame( invFrame, invList );
     curItemDict = curEquip['inventory'];
     db_log( 'Current Inventory: {}'.format( curItemDict ) );
     for iRuck in range( len( curItemDict ) ):
