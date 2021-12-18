@@ -31,4 +31,4 @@ def generate_menubar( root, charNameTuple, charClassTuple, attrDict, \
 
 def about_window():
     messagebox.showinfo("About", \
-                        "Deadlands GUI 1.0\nBy: Mickey T Da Silva\n\nGithub: ChemistryMickey\n\nIf you have suggestions, send an email to: \nChemistryMickeyFeedback\n\t@gmail.com")
+                        "Deadlands GUI 1.0\nBy: Mickey T Da Silva\n\nGithub: ChemistryMickey\n\nIf you have suggestions, leave an issue on the GitHub")
